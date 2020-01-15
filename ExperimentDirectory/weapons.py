@@ -1,0 +1,13 @@
+WEAPONS = {'greataxe': {'name': 'greataxe',
+                        'dmg': '1d12',
+                        'dmg_type': 'slashing',
+                        'rarity': 'standard',
+                        'properties': ('heavy', 'two-handed'),
+                        'weight': 7},
+           'shortsword': {'name': 'shortsword',
+                          'dmg': '1d6',
+                          'dmg_type': 'piercing',
+                          'rarity': 'standard',
+                          'properties': ('finesse', 'light'),
+                          'weight': 2},
+           }

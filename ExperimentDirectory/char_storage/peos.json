@@ -1,0 +1,219 @@
+{
+  "version": "0.5.4ds",
+  "name": "peos",
+  "status": "alive",
+  "cond": null,
+  "lvl": 1,
+  "ac": 12,
+  "race": "dwarf",
+  "class_": "barbarian",
+  "prof": {
+    "score": 2,
+    "armors": [
+      "light armor",
+      "medium armor",
+      "shields"
+    ],
+    "weapons": [
+      "simple weapons",
+      "martial weapons"
+    ]
+  },
+  "damage": {
+    "resist": "poison",
+    "immune": null,
+    "vulnerable": null
+  },
+  "speed": 25,
+  "hp": {
+    "max": 21,
+    "curr": 21,
+    "hit_dice": "1d12",
+    "lvlup_mod": "con"
+  },
+  "stats": {
+    "str": {
+      "score": 14,
+      "mod": 2,
+      "save": {
+        "score": 4,
+        "prof": true
+      }
+    },
+    "dex": {
+      "score": 14,
+      "mod": 2,
+      "save": {
+        "score": 2,
+        "prof": false
+      }
+    },
+    "con": {
+      "score": 15,
+      "mod": 2,
+      "save": {
+        "score": 4,
+        "prof": true
+      }
+    },
+    "int": {
+      "score": 13,
+      "mod": 1,
+      "save": {
+        "score": 1,
+        "prof": false
+      }
+    },
+    "wis": {
+      "score": 10,
+      "mod": 0,
+      "save": {
+        "score": 0,
+        "prof": false
+      }
+    },
+    "cha": {
+      "score": 12,
+      "mod": 1,
+      "save": {
+        "score": 1,
+        "prof": false
+      }
+    }
+  },
+  "skills": {
+    "acrobatics": {
+      "score": 2,
+      "stat": "dex",
+      "prof": false
+    },
+    "animal handling": {
+      "score": 0,
+      "stat": "wis",
+      "prof": false
+    },
+    "arcana": {
+      "score": 1,
+      "stat": "int",
+      "prof": false
+    },
+    "athletics": {
+      "score": 2,
+      "stat": "str",
+      "prof": false
+    },
+    "deception": {
+      "score": 1,
+      "stat": "cha",
+      "prof": false
+    },
+    "history": {
+      "score": 1,
+      "stat": "int",
+      "prof": false
+    },
+    "insight": {
+      "score": 0,
+      "stat": "wis",
+      "prof": false
+    },
+    "intimidation": {
+      "score": 3,
+      "stat": "cha",
+      "prof": true
+    },
+    "investigation": {
+      "score": 1,
+      "stat": "int",
+      "prof": false
+    },
+    "medicine": {
+      "score": 0,
+      "stat": "wis",
+      "prof": false
+    },
+    "nature": {
+      "score": 3,
+      "stat": "int",
+      "prof": true
+    },
+    "perception": {
+      "score": 0,
+      "stat": "wis",
+      "prof": false
+    },
+    "performance": {
+      "score": 1,
+      "stat": "cha",
+      "prof": false
+    },
+    "persuasion": {
+      "score": 1,
+      "stat": "cha",
+      "prof": false
+    },
+    "religion": {
+      "score": 1,
+      "stat": "int",
+      "prof": false
+    },
+    "sleight of hand": {
+      "score": 2,
+      "stat": "dex",
+      "prof": false
+    },
+    "stealth": {
+      "score": 2,
+      "stat": "dex",
+      "prof": false
+    },
+    "survival": {
+      "score": 0,
+      "stat": "wis",
+      "prof": false
+    }
+  },
+  "features": {
+    "rage": {
+      "descr": "You have advantage on Strength checks and Strength saving throws.\nWhen you make a melee _weapon attack_roll using Strength, you gain a bonus to the damage_roll roll that increases as you gain levels as a barbarian, as shown in the Rage Damage column of the Barbarian table.You have resistance to bludgeoning, piercing, and slashing damage_roll."
+    },
+    "unarmored defense": {
+      "descr": "While you are not wearing any armor, your Armor Class equals 10 + your Dexterity modifier + your Constitution modifier. You can use a shield and still gain this benefit."
+    }
+  },
+  "armor": {
+    "cost": null,
+    "ac": "10+dex",
+    "str_req": null,
+    "stealth": null,
+    "weight": null
+  },
+  "weapons": {
+    "greataxe": {
+      "name": "greataxe",
+      "dmg": "1d12",
+      "dmg_type": "slashing",
+      "rarity": "standard",
+      "properties": [
+        "heavy",
+        "two-handed"
+      ],
+      "weight": 7
+    },
+    "shortsword": {
+      "name": "shortsword",
+      "dmg": "1d6",
+      "dmg_type": "piercing",
+      "rarity": "standard",
+      "properties": [
+        "finesse",
+        "light"
+      ],
+      "weight": 2
+    }
+  },
+  "saves": {
+    "success": 0,
+    "failures": 0
+  }
+}
