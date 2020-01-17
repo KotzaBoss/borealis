@@ -1,13 +1,12 @@
+import os
 import random as rnd
+import sys
 
-#
-# from colorama import init
-# from pyqt.temp import Ui_CharacterCreation
+TOP_DIR = os.path.dirname(__file__)
+sys.path.append(os.path.dirname(__file__))
 from .classes import CLASSES
 from .races import RACES
-
-# from PyQt5 import QtWidgets as widg
-# from pyqt.common import Win
+from PyQt5.QtWidgets import QInputDialog
 # Uncomment for debug (keep random sequence the same)
 rnd.seed(666)
 
@@ -77,6 +76,9 @@ def finalise_init(race, class_, stats):
             stats[stat]['save']['prof'] = True
     return stats
 
+
+
+
 # def dice_roller(xdy: str, mem_out=True):
 #     """ Generic dice roller. Used in most functions
 #
@@ -130,3 +132,28 @@ def finalise_init(race, class_, stats):
 #     else:
 #         return {'success': 0,
 #                 'failures': 2}
+
+
+def choose_name():
+    name = QInputDialog.getText(QInputDialog(), "Name", "What is your name?")
+    print(name)
+    return name[0]
+
+def choose_race(name):
+    race = QInputDialog.getText(QInputDialog(), 'Race',
+                                f"What is {name}'{'' if name[-1] in ('s', 'S') else 's'} race: ")[0]
+    while True:
+        if race not in RACES:
+            race = QInputDialog.getText(QInputDialog(), 'Race', 'Unavailable race try again')[0]
+        else:
+            return race
+
+def choose_class(name):
+    class_ = QInputDialog.getText(QInputDialog(), 'Race',
+                                  f"What is {name}'{'' if name[-1] in ('s', 'S') else 's'} class: ")[0]
+    while True:
+        if class_ not in CLASSES.keys():
+            # class_ = cmdline_input(f"Unavailable class try again: ", prompt=False)
+            class_ = QInputDialog.getText(QInputDialog(), 'Race', 'Unavailable class')[0]
+        else:
+            return class_
