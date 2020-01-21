@@ -1,0 +1,62 @@
+<ClassChoice>:
+
+    GridLayout:
+        cols: 3
+        size: root.width, root.height
+
+        Button:
+            text: 'Barbarian'
+            on_press:
+                root.btn(self.text)
+                app.root.charcreate.disp()
+                app.root.current = 'init_roll'
+
+        Button:
+            id: Human
+            text: 'Monk'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'main'
+
+        Button:
+            id: Gnome
+            text: 'Rogue'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'main'
+
+        Button:
+            id: Dwarf
+            text: 'Ranger'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'main'
+
+        Button:
+            id: Dragonborn
+            text: 'Wizard'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'main'
+
+        Button:
+            id: Half_orc
+            text: 'Sorcerer'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'main'
+
+        Button:
+            id: Tiefling
+            text: 'Paladin'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'main'
+
+        Button:
+            id: Aaracokra
+            text: 'Cleric'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'main'
+

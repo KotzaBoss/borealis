@@ -1,0 +1,38 @@
+<WindowManager>:
+    MainWindow:
+        name: 'main'
+    CharCreate:
+        id: charcreate
+        name: 'char_create'
+    RaceChoice:
+        name: 'race_choice'
+    ClassChoice:
+        name: 'class_choice'
+    InitRoll:
+        name: 'init_roll'
+
+<MainWindow>:
+    Button:
+        text:'new'
+        on_press:
+            app.root.current = 'char_create'
+
+<CharCreate>:
+    name_input: name_input
+    name_pop: name_pop
+    RaceChoice:
+    ClassChoice:
+
+    Popup:
+        id: name_pop
+        title: 'NAME'
+        size: (300, 300)
+        TextInput:
+            id: name_input
+            multiline: False
+            on_text_validate:
+                root.get_name(self.text)
+                self.text = ''
+
+                app.root.current = 'race_choice'
+

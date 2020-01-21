@@ -1,0 +1,67 @@
+<CharCreate@WindowManager>:
+    Button:
+        text: '123'
+
+<RaceChoice>:
+
+    GridLayout:
+        cols: 3
+        size: root.width, root.height
+
+        Button:
+            id: Elf
+            text: 'Elf'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'class_choice'
+
+        Button:
+            id: Human
+            text: 'Human'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'class_choice'
+
+        Button:
+            id: Gnome
+            text: 'Gnome'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'class_choice'
+
+        Button:
+            id: Dwarf
+            text: 'Dwarf'
+            on_press:
+#                app.root.charcreate.disp()
+                root.btn(self.text)
+                app.root.current = 'class_choice'
+
+        Button:
+            id: Dragonborn
+            text: 'Dragonborn'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'class_choice'
+
+        Button:
+            id: Half_orc
+            text: 'Half-Elf'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'class_choice'
+
+        Button:
+            id: Tiefling
+            text: 'Tiefling'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'class_choice'
+
+        Button:
+            id: Aaracokra
+            text: 'Aaracokra'
+            on_press:
+                root.btn(self.text)
+                app.root.current = 'class_choice'
+

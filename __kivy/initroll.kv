@@ -1,0 +1,42 @@
+<InitRoll>:
+    mega_grid: mega_grid
+    prime_grid: prime_grid
+    stat_col: stat_col
+    input_col: input_col
+    checkbox: checkbox
+    col1: col1
+    col2: col2
+
+    on_enter:
+        root.getcolumns()
+
+    BoxLayout:
+        id: mega_grid
+        orientation: 'vertical'
+        cols: 1
+        rows: 2
+        BoxLayout:
+            id: prime_grid
+            orientation: 'horizontal'
+            cols: 4
+            rows: 6
+            BoxLayout:
+                id: stat_col
+                orientation: 'vertical'
+                cols: 1
+            BoxLayout:
+                id: input_col
+                orientation: 'vertical'
+                cols: 1
+            BoxLayout:
+                id: checkbox
+                orientation: 'vertical'
+                cols: 1
+            BoxLayout:
+                id: col1
+                orientation: 'vertical'
+                cols: 1
+            BoxLayout:
+                id: col2
+                orientation: 'vertical'
+                cols: 1
