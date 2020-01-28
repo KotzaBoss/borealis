@@ -52,7 +52,6 @@ SKILLS = {'acrobatics': {'stat': 'dex'},
           'survival': {'stat': 'wis'},
           }
 
-
 def set_skills(stats, class_):
     try:
         char_skill_score_stat = {skill: {'score': stats[skill_score_stat['stat']]['mod'],

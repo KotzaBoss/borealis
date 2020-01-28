@@ -1,0 +1,14 @@
+<SkillChoice>
+    mega_layout: mega_layout
+    prime_layout: prime_layout
+
+    on_enter:
+        root.setup()
+
+    BoxLayout:
+        id: mega_layout
+        rows: 2
+        orientation: 'vertical'
+        GridLayout:
+            id: prime_layout
+            cols: 4

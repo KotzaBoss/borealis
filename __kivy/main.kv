@@ -1,5 +1,7 @@
 <WindowManager>:
+    name: 'manager'
     MainWindow:
+        id: main
         name: 'main'
     CharCreate:
         id: charcreate
@@ -8,14 +10,49 @@
         name: 'race_choice'
     ClassChoice:
         name: 'class_choice'
+    SkillChoice:
+        name: 'skill_choice'
     InitRoll:
         name: 'init_roll'
 
+<ToolBar>:
+    ab: ab
+    ActionBar:
+        id: ab
+        butt: butt
+        pos_hint: {'top':1}
+        ActionView:
+            ActionButton:
+                id: butt
+                text: '123'
+            ActionPrevious:
+
 <MainWindow>:
-    Button:
-        text:'new'
-        on_press:
-            app.root.current = 'char_create'
+    toolbar: toolbar
+    RelativeLayout:
+        orientation: 'vertical'
+        cols: 2
+        rows:3
+        ToolBar:
+            id: toolbar
+            name: 'toolbar'
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text:'load all'
+                height: 80
+                size_hint_y: None
+                on_press:
+                    app.root.charcreate.read_character()
+                    root.toolbar.ab.text = 'test'
+                    if app.root.charcreate.load_failure_state: root.toolbar.ab.butt.text = app.root.charcreate.load_failure_msg
+#                    if app.root.charcreate.load_failure_state: root.ab.butt.text = app.root.name
+            Button:
+                text:'new'
+                size_hint_y: None
+                height: 80
+                on_press:
+                    app.root.current = 'char_create'
 
 <CharCreate>:
     name_input: name_input

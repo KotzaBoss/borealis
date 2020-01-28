@@ -6,6 +6,7 @@
     checkbox: checkbox
     col1: col1
     col2: col2
+    alloc: alloc
 
     on_enter:
         root.getcolumns()
@@ -40,3 +41,10 @@
                 id: col2
                 orientation: 'vertical'
                 cols: 1
+        Button:
+            id: alloc
+            text: 'Allocate'
+            size_hint_y: None
+            height: 100
+            on_press:
+                app.root.current = 'skill_choice'
