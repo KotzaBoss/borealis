@@ -20,7 +20,6 @@
     ActionBar:
         id: ab
         butt: butt
-        pos_hint: {'top':1}
         ActionView:
             ActionButton:
                 id: butt
@@ -29,30 +28,46 @@
 
 <MainWindow>:
     toolbar: toolbar
-    RelativeLayout:
+    textin: textin
+    BoxLayout:
         orientation: 'vertical'
-        cols: 2
-        rows:3
-        ToolBar:
-            id: toolbar
-            name: 'toolbar'
+        rows: 2
+        ScrollView:
+            Label:
+                id: textin
+                markup: True
+                text: "[i][size=25][color=ff00ff]\n    B O R E A L I S[/color][/size][/i]"
+                font_size: 20
+                size_hint_y: None
+                height: self.texture_size[1]
+                text_size: self.width, None
         BoxLayout:
-            orientation: 'horizontal'
-            Button:
-                text:'load all'
-                height: 80
+            orientation: 'vertical'
+            size_hint_y: None
+            height: 150
+            BoxLayout:
+                rows: 3
+                orientation: 'vertical'
+                Button:
+                    text:'load all'
+                    on_press:
+                        app.root.charcreate.read_character()
+                        root.toolbar.ab.text = '--'
+                        if app.root.charcreate.load_failure_state: root.toolbar.ab.butt.text = app.root.charcreate.load_failure_msg
+                        else: root.toolbar.ab.butt.text = '--'
+                Button:
+                    text:'new'
+                    on_press:
+                        app.root.current = 'char_create'
+                Button:
+                    text: 'display'
+                    on_press:
+                        root.display()
+            ToolBar:
+                id: toolbar
+                name: 'toolbar'
                 size_hint_y: None
-                on_press:
-                    app.root.charcreate.read_character()
-                    root.toolbar.ab.text = 'test'
-                    if app.root.charcreate.load_failure_state: root.toolbar.ab.butt.text = app.root.charcreate.load_failure_msg
-#                    if app.root.charcreate.load_failure_state: root.ab.butt.text = app.root.name
-            Button:
-                text:'new'
-                size_hint_y: None
-                height: 80
-                on_press:
-                    app.root.current = 'char_create'
+                height: 50
 
 <CharCreate>:
     name_input: name_input

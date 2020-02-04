@@ -1,5 +1,6 @@
 import json
 
+import requests
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
 from kivy.uix.button import Button
 from kivy.uix.checkbox import CheckBox
@@ -8,19 +9,16 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.textinput import TextInput
 
 from .common import DeathSaves, IncompatibleVersion
-from .common.classes import CLASSES
-from .common.races import RACES
 from .common.skills import SKILLS
 from .common.utils import STATS, init_stat_roll, finalise_init
 
 CHARACTERS = {}
 
-
 class Character(object):
     """ TODO:
 
         - [ ] Implement inventory
-        - [~] Implement weapons
+        - [ ] Implement weapons
 
           Should weapons, armor, inv be separate? (i guess so)
 
@@ -31,7 +29,7 @@ class Character(object):
         - Understand the connections between stats-skills-armor...
     """
 
-    _version = '0.5.4kv'
+    _version = '0.5.5req'
 
     def __init__(self, json_=None, **kargs):
         if json_:
@@ -39,75 +37,50 @@ class Character(object):
         else:
             self.new_character(**kargs)
 
-        # only to print attributes in custom order
-        self.__dict__ = {'version': self.version,
-                         'name': self.name,
-                         'status': self.status,
-                         'cond': self.cond,
-                         'lvl': self.lvl,
-                         'ac': self.ac,
-                         'race': self.race,
-                         'class_': self.class_,
-                         'prof': self.prof,
-                         'damage': self.damage,
-                         'speed': self.speed,
-                         'hp': self.hp,
-                         'stats': self.stats,
-                         'skills': self.skills,
-                         'features': self.features,
-                         'armor': self.armor,
-                         'weapons': self.weapons,
-                         'saves': self.saves
-                         }
-
     @classmethod
     def from_json(cls, json_):  # Constructor from json
         return cls(json_=json_)
 
     def json_character(self, json_):
-        self.name = json_['name']
-        self.status = json_['status']
-        self.cond = json_['cond']
-        self.lvl = json_['lvl']
-        self.ac = json_['ac']
-        self.race = json_['race']
-        self.class_ = json_['class_']
-        self.prof = json_['prof']
-        self.damage = json_['damage']
-        self.speed = json_['speed']
-        self.hp = json_['hp']
-        self.stats = json_['stats']
-        self.skills = json_['skills']
-        self.features = json_['features']
-        self.armor = json_['armor']
-        self.weapons = json_['weapons']
-        self.saves = DeathSaves(json_['saves'])
-        self.version = json_['version']
+        for key in json_:
+            setattr(self, str(key), json_[key])
+        self.saves = DeathSaves(self.saves)
 
-    def new_character(self, **kargs):
+    def new_character(self, **kwargs):
+        class_init = json.loads(requests.get(f"https://www.dnd5eapi.co/api/classes/{kwargs['class_']}").text)
+        race_init = json.loads(requests.get(f"https://www.dnd5eapi.co/api/races/{kwargs['race']}").text)
+        class_lvl_init = json.loads(
+            requests.get(f"https://www.dnd5eapi.co/api/classes/{kwargs['class_']}/levels/1").text)
+
         self.lvl = 1
-        self.name = kargs['name']
+        self.name = kwargs['name']
         self.status = 'alive'
         self.cond = None
-        self.race = kargs['race']
-        self.class_ = kargs['class_']
-        self.stats = kargs['init_stats']
-        self.skills = kargs['init_skills']
-        self.prof = {'score': CLASSES[self.class_]['lvls'][1]['prof'],
-                     'armors': CLASSES[self.class_]['skill_prof']['armor'],
-                     'weapons': CLASSES[self.class_]['skill_prof']['weapons']}
+        self.race = kwargs['race']
+        self.class_ = kwargs['class_']
+        self.stats = kwargs['init_stats']
+        self.skills = kwargs['init_skills']
+        self.prof = {'score': class_lvl_init['prof_bonus'],
+                     'class_profs': class_init['proficiencies'],
+                     'race_profs': race_init['starting_proficiencies']}
         self.hp = init_hp(self.stats, self.class_)
-        self.armor = CLASSES[self.class_]['armor']
-        num, stat = CLASSES[self.class_]['armor']['ac'].split('+')
+        self.armor = '<PLACEHOlDER>'
+        num, stat = '10', 'con'  # placeholders
         self.ac = int(num) + self.stats[stat]['mod']
-        self.weapons = {weapon['name']: weapon for weapon in CLASSES[self.class_]['weapons']}
-        self.features = CLASSES[self.class_]['lvls'][1]['features']
-        self.damage = RACES[kargs['race']]['damage']
-        self.speed = RACES[kargs['race']]['speed']
+        self.weapons = {'<PLACEHONDER>': "api/startingweapons"}  # api doesnt have them
+        self.features = class_lvl_init['features']
+        self.class_specific = class_lvl_init['class_specific']
+        self.damage = '<PLACEHOLDER>'
+        self.speed = race_init['speed']
+        self.size = race_init['size']
+        self.languages = race_init['languages']
+        self.traits = race_init['traits']
         self.saves = DeathSaves({'success': 0,
                                  'failures': 0})
         self.version = Character._version
 
+    def __str__(self):
+        return str(self.__dict__)
 
 class CharCreate(Screen):
     load_failure_state = BooleanProperty(False)
@@ -154,8 +127,10 @@ class ClassChoice(Screen):
         CharCreate._class = btn_text.lower()
 
 
-for i in {'Barbarian', 'Monk', 'Rogue', 'Ranger', 'Wizard', 'Sorcerer', 'Cleric', 'Paladin'}:
-    setattr(ClassChoice, f"{i}", ObjectProperty(None))
+classes = json.loads(requests.get('https://www.dnd5eapi.co/api/classes').text)
+for class_ in classes['results']:
+    setattr(ClassChoice, f"{class_['name'].lower()}", ObjectProperty(None))
+del classes
 
 
 class RaceChoice(Screen):
@@ -163,25 +138,34 @@ class RaceChoice(Screen):
         CharCreate._race = btn_text.lower()
 
 
-for i in {'Elf', 'Human', 'Gnome', 'Dwarf', 'Dragonborn', 'Half_orc', 'Tiefling', 'Aaracokra'}:
-    setattr(RaceChoice, f"{i}", ObjectProperty(None))
+races = json.loads(requests.get('https://www.dnd5eapi.co/api/races').text)
+for race in races['results']:
+    setattr(RaceChoice, f"{race['name'].lower()}", ObjectProperty(None))
+del races
 
 
 class SkillChoice(Screen):
 
     def setup(self):
+        class_init = json.loads(requests.get(f"https://www.dnd5eapi.co/api/classes/{CharCreate._class.lower()}").text)
+
         self.choices = 0
+        self.max_choices = class_init['proficiency_choices'][0]['choose']
         self.char_skill_score_stat = {skill: {'score': CharCreate._init_stats[skill_score_stat['stat']]['mod'],
                                               'stat': skill_score_stat['stat'],
                                               'prof': False}
                                       for skill, skill_score_stat in SKILLS.items()}
 
-        self.mega_layout.add_widget(Label(text=f"Choose {CLASSES[CharCreate._class]['skill_prof']['num']}",
+        self.mega_layout.add_widget(Label(text=f"Choose {self.max_choices}",
                                           size_hint_y=None,
                                           height=100))
 
-        for skill in CLASSES[CharCreate._class]['skill_prof']['skills']:
-            skillbtn = Button(text=f"{skill}")
+        # self.mega_layout.add_widget(Label(text=f"Choose {CLASSES[CharCreate._class]['skill_prof']['num']}",
+        #                                   size_hint_y=None,
+        #                                   height=100))
+        # for skill in CLASSES[CharCreate._class]['skill_prof']['skills']:
+        for skill in class_init['proficiency_choices'][0]['from']:
+            skillbtn = Button(text=f"{skill['name'].split(' ', maxsplit=1)[1].lower()}")
             skillbtn.bind(on_press=self.set_skills)
             self.prime_layout.add_widget(skillbtn)
 
@@ -190,7 +174,7 @@ class SkillChoice(Screen):
         btn.disabled = True
         self.char_skill_score_stat[btn.text]['score'] += 2
         self.char_skill_score_stat[btn.text]['prof'] = True
-        if self.choices == 2:
+        if self.choices == self.max_choices:
             CharCreate._init_skills = self.char_skill_score_stat
             self.manager.current = 'main'
             CHARACTERS[CharCreate._name] = Character(init=True,
@@ -266,10 +250,11 @@ class InitRoll(Screen):
 
 
 def init_hp(stats, class_):
-    return {'max': CLASSES[class_]['init_hp'] + stats[CLASSES[class_]['lvlup_mod']]['mod'],
-            'curr': CLASSES[class_]['init_hp'] + stats[CLASSES[class_]['lvlup_mod']]['mod'],
-            'hit_dice': CLASSES[class_]['hit_dice'],
-            'lvlup_mod': CLASSES[class_]['lvlup_mod']}
+    class_init = json.loads(requests.get(f'https://www.dnd5eapi.co/api/classes/{class_}').text)
+    return {'max': class_init['hit_die'] + stats['con']['mod'],
+            'curr': class_init['hit_die'] + stats['con']['mod'],
+            'hit_dice': f"1d{class_init['hit_die']}",
+            'lvlup_mod': 'con'}  # <-- couldnt find in api
 
 
 def save_character(character):

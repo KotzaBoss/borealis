@@ -1,10 +1,10 @@
 {
   "lvl": 1,
-  "name": "peos",
+  "name": "TAKIS",
   "status": "alive",
   "cond": null,
   "race": "dwarf",
-  "class_": "ranger",
+  "class_": "barbarian",
   "stats": {
     "str": {
       "score": 12,
@@ -18,16 +18,16 @@
       "score": 12,
       "mod": 0,
       "save": {
-        "score": 2,
-        "prof": true
+        "score": 0,
+        "prof": false
       }
     },
     "con": {
       "score": 14,
       "mod": 2,
       "save": {
-        "score": 2,
-        "prof": false
+        "score": 4,
+        "prof": true
       }
     },
     "int": {
@@ -87,9 +87,9 @@
       "prof": false
     },
     "insight": {
-      "score": 2,
+      "score": 0,
       "stat": "wis",
-      "prof": true
+      "prof": false
     },
     "intimidation": {
       "score": 0,
@@ -112,9 +112,9 @@
       "prof": false
     },
     "perception": {
-      "score": 0,
+      "score": 2,
       "stat": "wis",
-      "prof": false
+      "prof": true
     },
     "performance": {
       "score": 0,
@@ -137,9 +137,9 @@
       "prof": false
     },
     "stealth": {
-      "score": 2,
+      "score": 0,
       "stat": "dex",
-      "prof": true
+      "prof": false
     },
     "survival": {
       "score": 0,
@@ -191,9 +191,9 @@
     ]
   },
   "hp": {
-    "max": 12,
-    "curr": 12,
-    "hit_dice": "1d10",
+    "max": 14,
+    "curr": 14,
+    "hit_dice": "1d12",
     "lvlup_mod": "con"
   },
   "armor": "<PLACEHOlDER>",
@@ -203,17 +203,18 @@
   },
   "features": [
     {
-      "name": "Favored Enemy (1 type)",
-      "url": "/api/features/favored-enemy-1-type"
+      "name": "Rage",
+      "url": "/api/features/rage"
     },
     {
-      "name": "Natural Explorer (1 terrain type)",
-      "url": "/api/features/natural-explorer-1-terrain-type"
+      "name": "Unarmored Defense",
+      "url": "/api/features/unarmored-defense"
     }
   ],
   "class_specific": {
-    "favored_enemies": 1,
-    "favored_terrain": 1
+    "rage_count": 2,
+    "rage_damage_bonus": 2,
+    "brutal_critical_dice": 0
   },
   "damage": "<PLACEHOLDER>",
   "speed": 30,

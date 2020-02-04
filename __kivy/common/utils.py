@@ -1,11 +1,12 @@
+import json
 import os
 import random as rnd
 import sys
 
+import requests
+
 TOP_DIR = os.path.dirname(__file__)
 sys.path.append(os.path.dirname(__file__))
-from .classes import CLASSES
-from .races import RACES
 
 # Uncomment for debug (keep random sequence the same)
 rnd.seed(666)
@@ -67,13 +68,24 @@ def init_stat_roll():
 
 
 def finalise_init(race, class_, stats):
-    for stat in stats:
-        stats[stat]['score'] += RACES[race]['stats'][stat]
-        stats[stat]['mod'] = get_mod(stats[stat]['score'])
-        stats[stat]['save']['score'] = stats[stat]['mod']
-        if stat in CLASSES[class_]['saves']:
-            stats[stat]['save']['score'] += CLASSES[class_]['lvls'][1]['prof']
-            stats[stat]['save']['prof'] = True
+    class_ = class_.lower()
+    race = race.lower()
+
+    class_lvl_init = json.loads(requests.get(f"https://www.dnd5eapi.co/api/classes/{class_}/levels/1").text)
+    class_init = json.loads(requests.get(f'https://www.dnd5eapi.co/api/classes/{class_}').text)
+    race_init = json.loads(requests.get(f'https://www.dnd5eapi.co/api/races/{race}').text)
+
+    for stat in race_init['ability_bonuses']:
+        stat['name'] = stat['name'].lower()
+        stats[stat['name']]['score'] += stat['bonus']
+        stats[stat['name']]['mod'] = get_mod(stats[stat['name']]['score'])
+        stats[stat['name']]['save']['score'] = stats[stat['name']]['mod']
+
+    for stat in class_init['saving_throws']:
+        stat['name'] = stat['name'].lower()
+        stats[stat['name']]['save']['score'] += class_lvl_init['prof_bonus']
+        stats[stat['name']]['save']['prof'] = True
+
     return stats
 
 # def dice_roller(xdy: str, mem_out=True):
