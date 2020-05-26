@@ -14,4 +14,3 @@ The primary idea is to give the user a handy "real-time" assistant when they pla
 leveling them up, engaging in combat and so on.  
 While Aurora is the "sit-down-relax" companion, Borealis will be the "in-the-trenches" ally.
 
-
