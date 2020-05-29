@@ -1,4 +1,4 @@
-from .component import Component
+from . import Component
 
 
 class Text(Component):
@@ -12,6 +12,9 @@ class Text(Component):
     @text.setter
     def text(self, string: str):
         self._text = string
+
+    def update(self, char_sheet: dict):
+        pass
 
     def __repr__(self):
         return self.text
