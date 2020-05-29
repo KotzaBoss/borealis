@@ -1,4 +1,4 @@
-from .component import Component
+from . import Component
 
 
 class Stealth(Component):
@@ -12,6 +12,9 @@ class Stealth(Component):
     @stealth.setter
     def stealth(self, value: bool):
         self._stealth = value
+
+    def update(self, char_sheet: dict):
+        pass
 
     def __repr__(self):
         return str(self._stealth)

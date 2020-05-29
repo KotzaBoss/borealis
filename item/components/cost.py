@@ -1,5 +1,7 @@
+from typing import Union
+
 from enums import COIN
-from .component import Component
+from . import Component
 
 
 class Cost(Component):
@@ -10,6 +12,12 @@ class Cost(Component):
             cost = {COIN.PLATINUM: 0, COIN.GOLD: 0, COIN.ELECTRUM: 0, COIN.SILVER: 0, COIN.COPPER: 0}
         self._cost = cost
 
+    def __getitem__(self, item: Union[COIN, str]):
+        return self._cost[item]
+
+    def __setitem__(self, key, value):
+        self._cost[key] = value
+
     @property
     def cost(self):
         return self._cost
@@ -18,5 +26,8 @@ class Cost(Component):
     def cost(self, cost_dict):
         self._cost = cost_dict
 
+    def update(self, char_sheet: dict):
+        pass
+
     def __repr__(self):
-        return str(self.cost)
+        return str({coin_type.name: self._cost[coin_type] for coin_type in self._cost})

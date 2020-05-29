@@ -1,5 +1,5 @@
 class Item(object):
-    """ Used for any item (weapon, armor, ring, ...) acquired by the player. """
+    """ Basic class for any item (weapon, armor, ring, ...) acquired by the player. """
 
     def __init__(self, components: dict = None):
         if not components:

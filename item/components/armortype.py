@@ -1,5 +1,5 @@
 from enums import ARMORTYPE
-from .component import Component
+from . import Component
 
 
 class ArmorType(Component):
@@ -13,6 +13,9 @@ class ArmorType(Component):
     @armor_type.setter
     def armor_type(self, armtype: ARMORTYPE):
         self._arm_type = armtype
+
+    def update(self, char_sheet: dict):
+        pass
 
     def __repr__(self):
         return str(self._arm_type.name)
