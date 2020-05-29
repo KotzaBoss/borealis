@@ -1,35 +1,41 @@
 from enums import ABILITY
-from . import Component
+from item.components import Component, Bollean
 
 
 class Requirement(Component):
+    def __init__(self, requirement, **kwargs):
+        super().__init__(**kwargs)  # forward keyword arguments
+        self._requirement = requirement
+
+    @property
+    def requirement(self):
+        return self._requirement
+
+    @requirement.setter
+    def requirement(self, requirement):
+        self._requirement = requirement
+
+    def update(self, char_sheet: dict):
+        pass
+
+
+class AbilityRequirement(Requirement):
     def __init__(self, value=-666, ability: ABILITY = ABILITY.NONE):
-        self._value: int = value
-        self._ability = ability
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, value):
-        self._value = value
-
-    @property
-    def ability(self):
-        return self._ability
-
-    @ability.setter
-    def ability(self, ability):
-        self._ability = ability
+        super().__init__({'value': value, 'ability': ability})
 
     def update(self, char_sheet: dict):
         pass
 
     def __repr__(self):
-        return f"Requires {self._ability.name} > {str(self._value)}"
+        return f"{self._requirement['ability'].name} > {self._requirement['value']}"
 
 
-class AbilityRequirement(Requirement):
-    def __init__(self, value=-666, ability: ABILITY = ABILITY.NONE):
-        super().__init__(value, ability)
+class Attunement(Requirement, Bollean):
+    def __init__(self, attunement: bool = False):
+        super().__init__(attunement, bvalue=attunement)
+
+    def update(self, char_sheet: dict):
+        pass
+
+    def __repr__(self):
+        return str(self._requirement)

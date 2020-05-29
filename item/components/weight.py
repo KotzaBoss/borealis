@@ -29,7 +29,10 @@ class Pound(Mass):
         return 0.453 * self._value
 
     def __repr__(self):
-        return f"{self._value} {self.__class__.__name__}"
+        if self._value < 1:
+            return f"{self._value} {self.__class__.__name__}"
+        else:
+            return f"{self._value} {self.__class__.__name__}s"
 
 
 class Kilogram(Mass):
@@ -40,7 +43,10 @@ class Kilogram(Mass):
         return self._value / 0.453
 
     def __repr__(self):
-        return f"{self._value} {self.__class__.__name__}"
+        if self._value < 1:
+            return f"{self._value} {self.__class__.__name__}"
+        else:
+            return f"{self._value} {self.__class__.__name__}s"
 
 
 class Weight(Component):

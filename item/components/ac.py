@@ -1,6 +1,7 @@
 from enums import ABILITY
 from . import Component
 
+
 class AC(Component):
     def __init__(self, flat_ac=-1, dex_cap=3, dex=3, use_dex=False):
         self._ac = flat_ac

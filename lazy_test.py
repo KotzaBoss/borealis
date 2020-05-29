@@ -1,23 +1,28 @@
 from enums import *
 from item import Item
 from item.components.ac import AC
-from item.components.armortype import ArmorType
+from item.components.activated import Activated
+from item.components.armor_type import ArmorType
 from item.components.bonuses import ACBonus, DamageBonus
 from item.components.capacity import Capacity, CubicMeter
 from item.components.charges import Charges
+from item.components.consumable import Consumable
 from item.components.cost import Cost
-from item.components.damagetype import Resistance
+from item.components.cursed import Cursed
+from item.components.damage_type import Resistance
 from item.components.dc import DC
 from item.components.dice import DamageDice
 from item.components.durations import Don, EffectDuration
+from item.components.healing import Healing
 from item.components.rarity import Rarity, RARITY
 from item.components.requirement import AbilityRequirement
+from item.components.requirement import Attunement
+from item.components.silvered import Silvered
 from item.components.weight import Weight
+from roll import roll
 
 if __name__ == '__main__':
-    item = Item()
-
-    item.insert_component(
+    item = Item(components={
         AC(13, 10, 5, True),
         Weight(8),
         ArmorType(),
@@ -30,8 +35,18 @@ if __name__ == '__main__':
         DamageDice('1d8'),
         AbilityRequirement(14, ABILITY.CHA),
         Cost(),
-        Capacity(CubicMeter(100)),
+        Capacity(CubicMeter(1)),
         Resistance({DAMAGETYPE.BLUDGEONING, DAMAGETYPE.MAGIC, DAMAGETYPE.NECROTIC}),
-        Charges(3)
+        Charges(3),
+        Attunement(),
+        Consumable(True),
+        Cursed(),
+        Activated(),
+        Silvered(True),
+        Healing(123)
+    }
     )
     print(item)
+
+    for expr in ['1d20', '2d6', '1d100', '1d1', '1d 2', 'd2']:
+        print(f"{expr} -> {roll(expr)}")

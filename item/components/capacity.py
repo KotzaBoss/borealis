@@ -37,7 +37,10 @@ class CubicFeet(Volume):
         return self._value * 0.0283
 
     def __repr__(self):
-        return f"{self._value} {self.__class__.__name__}"
+        if self._value < 1:
+            return f"{self._value} {self.__class__.__name__}"
+        else:
+            return f"{self._value} {self.__class__.__name__}s"
 
 
 class CubicMeter(Volume):
@@ -48,7 +51,10 @@ class CubicMeter(Volume):
         return self._value * 35.31
 
     def __repr__(self):
-        return f"{self._value} {self.__class__.__name__}"
+        if self._value <= 1:
+            return f"{self._value} {self.__class__.__name__}"
+        else:
+            return f"{self._value} {self.__class__.__name__}s"
 
 
 class Capacity(Component):

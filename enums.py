@@ -1,6 +1,10 @@
 from enum import Enum
 
 
+class WEAPONTYPE(Enum):
+    pass
+
+
 class RARITY(Enum):
     MUNDANE = 'MUNDANE'
     COMMON = 'COMMON'
