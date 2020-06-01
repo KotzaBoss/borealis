@@ -52,12 +52,9 @@ item_creation_test(
         Advantage({OnAbilityCheck(ABILITY.DEX),
                    OnAttack(True),
                    OnConditionSavingThrow(CONDITION.CHARMED)}),
-        Disadvantage(OnSkill(SKILL.ARCANA))
+        Disadvantage({OnSkill(SKILL.ARCANA)})
     ],
     name="Dragon's Vape"
 )
 
 # roll_test(['1d20', '2d6', '1d100', '1d1', '1d 2', 'd2'])
-
-a = Disadvantage(OnAttack(True))
-print(a.disadvantage)
