@@ -1,6 +1,12 @@
 from enums import *
 from item.components.ac import AC
 from item.components.activated import Activated
+from item.components.advantages import OnAbilityCheck, \
+    OnAttack, \
+    Advantage, \
+    Disadvantage, \
+    OnConditionSavingThrow, \
+    OnSkill
 from item.components.armor_type import ArmorType
 from item.components.bonuses import ACBonus, DamageBonus
 from item.components.capacity import Capacity, CubicMeter
@@ -18,10 +24,10 @@ from item.components.requirement import AbilityRequirement
 from item.components.requirement import Attunement
 from item.components.silvered import Silvered
 from item.components.weight import Weight
-from lazy_test import item_creation_test, roll_test
+from lazy_test import item_creation_test
 
 item_creation_test(
-    {
+    [
         AC({'flat ac': 10, 'dex cap': 2, 'dex': 5, 'use dex': True}),
         Weight(8),
         ArmorType(),
@@ -37,14 +43,21 @@ item_creation_test(
         Capacity(CubicMeter(1)),
         Resistance({DAMAGETYPE.BLUDGEONING, DAMAGETYPE.MAGIC, DAMAGETYPE.NECROTIC}),
         Charges(3),
-        Attunement(),
+        Attunement(True),
         Consumable(True),
         Cursed(),
         Activated(),
         Silvered(True),
-        Healing(123)
-    },
+        Healing(123),
+        Advantage({OnAbilityCheck(ABILITY.DEX),
+                   OnAttack(True),
+                   OnConditionSavingThrow(CONDITION.CHARMED)}),
+        Disadvantage(OnSkill(SKILL.ARCANA))
+    ],
     name="Dragon's Vape"
 )
 
-roll_test(['1d20', '2d6', '1d100', '1d1', '1d 2', 'd2'])
+# roll_test(['1d20', '2d6', '1d100', '1d1', '1d 2', 'd2'])
+
+a = Disadvantage(OnAttack(True))
+print(a.disadvantage)
