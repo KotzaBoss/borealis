@@ -1,7 +1,6 @@
 from item import Item
 from roll import roll
-
-def item_creation_test(components: set, name='Unamed Item'):
+def item_creation_test(components, name='Unamed Item'):
     item = Item(name=name, components=components)
     print(item)
 

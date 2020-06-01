@@ -1,9 +1,11 @@
+from typing import Union, Dict
+
 from enums import ABILITY
 from item.components import Component, Bollean
 
 
-class Requirement(Component):
-    def __init__(self, requirement, **kwargs):
+class Requirement(Component, Bollean):
+    def __init__(self, requirement: Union[Dict[str, Union[int, ABILITY]], bool], **kwargs):
         super().__init__(**kwargs)  # forward keyword arguments (used by Bollean class)
         self._requirement = requirement
 
@@ -30,9 +32,9 @@ class AbilityRequirement(Requirement):
         return f"{self._requirement['ability'].name} > {self._requirement['value']}"
 
 
-class Attunement(Requirement, Bollean):
+class Attunement(Requirement):
     def __init__(self, attunement: bool = False):
-        super().__init__(attunement, bvalue=attunement)
+        super().__init__(requirement=attunement, bvalue=attunement)
 
     def update(self, char_sheet: dict):
         pass
