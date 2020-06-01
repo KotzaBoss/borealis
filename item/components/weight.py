@@ -8,17 +8,17 @@ class Mass(int):
         super().__init__()
         self._value = value
 
-    def to_imperial(self):
-        pass
-
-    def to_metric(self):
-        pass
-
     def __add__(self, other):
         return self._value + other._value
 
     def __sub__(self, other):
         return self._value - other._value
+
+    def to_imperial(self):
+        pass
+
+    def to_metric(self):
+        pass
 
 
 class Pound(Mass):

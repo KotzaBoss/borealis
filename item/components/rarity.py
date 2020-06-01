@@ -3,7 +3,7 @@ from item.components import Component
 
 
 class Rarity(Component):
-    def __init__(self, rarity: RARITY):
+    def __init__(self, rarity: RARITY = RARITY.NONE):
         self._rarity = rarity
 
     @property

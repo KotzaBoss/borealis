@@ -4,7 +4,7 @@ from item.components import Component, Bollean
 
 class Requirement(Component):
     def __init__(self, requirement, **kwargs):
-        super().__init__(**kwargs)  # forward keyword arguments
+        super().__init__(**kwargs)  # forward keyword arguments (used by Bollean class)
         self._requirement = requirement
 
     @property

@@ -8,6 +8,12 @@ class Volume(int):
         super().__init__()
         self._value = value
 
+    def __add__(self, other):
+        return self._value + other._value
+
+    def __sub__(self, other):
+        return self._value - other._value
+
     @property
     def value(self):
         return self._value
@@ -21,12 +27,6 @@ class Volume(int):
 
     def to_metric(self):
         pass
-
-    def __add__(self, other):
-        return self._value + other._value
-
-    def __sub__(self, other):
-        return self._value - other._value
 
 
 class CubicFeet(Volume):

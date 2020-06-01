@@ -2,69 +2,74 @@ from enums import ABILITY
 from . import Component
 
 
+def validate_input(func):
+    """ Decorator for AC class setter functions.
+
+        Raises
+        ------
+        TypeError
+            If argument of wrapped function is not type(dict)
+        KeyError
+            if argument of wrapped function is not subset of AC.AC_KEYS
+    """
+
+    def wrapper(self, val=None):
+        if not val:
+            val = {}
+        if not type(val) == dict:
+            raise TypeError(f"type: '{type(val)}' is not legal value for {type(dict)} AC>")
+        elif not set(val.keys()).issubset(AC.AC_KEYS):
+            raise KeyError(f"{set(val.keys()).difference(AC.AC_KEYS)} are not valid AC keys.")
+        func(self, val)
+
+    return wrapper
+
+
 class AC(Component):
-    def __init__(self, flat_ac=-1, dex_cap=3, dex=3, use_dex=False):
-        self._ac = flat_ac
-        self._flat_ac = flat_ac
-        self._use_dex = use_dex
-        self._dex_cap = dex_cap
-        self._dex = dex
+    AC_KEYS = {'flat ac', 'dex cap', 'dex', 'use dex'}
+
+    @validate_input
+    def __init__(self, ac: dict = None):
+        if not ac:
+            ac = {'flat ac': 0, 'dex cap': 0, 'dex': 0, 'use dex': False}
+        ac.update({'AC': 0})
+        self._ac = ac
         self.update_ac()
+
+    def __getitem__(self, item):
+        return self._ac[item]
+
+    def __setitem__(self, key, value):
+        if key not in self.AC_KEYS:
+            raise KeyError(f"{key} not valid AC key.")
+        self._ac[key] = value
+
+    def get(self, key, default=None):
+        return self._ac.get(key, default)
 
     def update(self, char_sheet: dict):
         if ABILITY.DEX in char_sheet:
-            self._dex = char_sheet['DEX']
+            self._ac['dex'] = char_sheet['DEX']
             self.update_ac()
 
     def update_ac(self):
-        if self._use_dex:
-            self._ac = self.flat_ac + min(self._dex_cap, self._dex)
+        if self._ac['use dex']:
+            self._ac['AC'] = self._ac['flat ac'] + min(self._ac['dex cap'], self._ac['dex'])
         else:
-            self._ac = self._flat_ac
-
-    @property
-    def flat_ac(self):
-        return self._flat_ac
-
-    @flat_ac.setter
-    def flat_ac(self, value):
-        self._flat_ac = value
-        self.update_ac()
-
-    @property
-    def use_dex(self):
-        return self._use_dex
-
-    @use_dex.setter
-    def use_dex(self, value):
-        self._use_dex = value
-        self.update_ac()
-
-    @property
-    def dex_cap(self):
-        return self._dex_cap
-
-    @dex_cap.setter
-    def dex_cap(self, value):
-        self._dex_cap = value
-        self.update_ac()
-
-    @property
-    def dex(self):
-        return self._dex
-
-    @dex.setter
-    def dex(self, value):
-        self._dex = value
-        self.update_ac()
+            self._ac['AC'] = self._ac['flat ac']
 
     @property
     def ac(self):
         return self._ac
 
+    @validate_input  # type: ignore
     @ac.setter
-    def ac(self, value):
-        self._ac = value
+    def ac(self, value: dict):
+        self._ac.update(value)
 
     def __repr__(self):
-        return str(self._ac)
+        return ' '.join(
+            [str(self._ac['AC']),
+             str({key: val for key, val in self._ac.items() if key != 'AC'})
+             ]
+        )

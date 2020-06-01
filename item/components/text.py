@@ -2,8 +2,8 @@ from . import Component
 
 
 class Text(Component):
-    def __init__(self, txt=''):
-        self._text: str = txt
+    def __init__(self, txt: str = ''):
+        self._text = txt
 
     @property
     def text(self):

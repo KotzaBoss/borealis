@@ -12,7 +12,7 @@ class RARITY(Enum):
     RARE = 'RARE'
     VERY = 'VERY RARE'
     LEGENDARY = 'LEGENDARY'
-
+    NONE = 'NONE'
 
 class DAMAGETYPE(Enum):
     SLASHING = 'SLASHING'
@@ -38,7 +38,7 @@ class COIN(Enum):
     ELECTRUM = 'E'
     SILVER = 'S'
     COPPER = 'C'
-
+    NONE = 'NONE'
 
 class ABILITY(Enum):
     STR = 'STR'

@@ -7,7 +7,7 @@ from item.components import Component
 class DamageType(Component):
     def __init__(self, dmg_types: Set[DAMAGETYPE] = None):
         if not dmg_types:
-            dmg_types = {}
+            dmg_types = set()
         self._types = dmg_types
 
     @property

@@ -1,4 +1,4 @@
-from typing import Union, Set, List
+from typing import Union, Set, List, Dict
 
 from item.components import Component
 
@@ -6,10 +6,9 @@ from item.components import Component
 class Item(object):
     """ Basic class for any item (weapon, armor, ring, ...) acquired by the player. """
 
-    def __init__(self, name='Unamed Item', *, components: Union[Set[Component], List[Component]] = None):
-        if not components:
-            self._components = {}
-        else:
+    def __init__(self, components: Union[Set[Component], List[Component]] = None, name: str = 'Unamed Item'):
+        self._components: Dict[str, Component] = {}
+        if components:
             self._components = {}
             for component in components:
                 self._components[component.__class__.__name__] = component

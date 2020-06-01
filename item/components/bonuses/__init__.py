@@ -20,7 +20,6 @@ from item.components import Component
 
 
 class Bonus(Component):
-
     def __init__(self, bonus=-666):
         self._bonus: Union[int, ABILITY] = bonus
 
