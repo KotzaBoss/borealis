@@ -2,6 +2,9 @@
 THOUGHT: Should __init__ arguments be a set/list or implement them with *args ?
 """
 
+__all__ = ['Advantage', 'Disadvantage', 'OnAbilityCheck', 'OnAbilitySavingThrow',
+           'OnConditionSavingThrow', 'OnSkill', 'OnAttack', 'OnDeathSavingThrow']
+
 from typing import Union, List, Set
 
 from enums import ABILITY, CONDITION, SKILL
@@ -19,28 +22,28 @@ class _Advantage_Type(Bollean):
         return self._on.name
 
 
-class _Advantage_Component_Base(Component):
+class _Advantage_Component(Component):
     def __init__(self, _advantages: Union[Set[_Advantage_Type], List[_Advantage_Type], _Advantage_Type] = None):
         if not _advantages:
-            _advantages = {}
-        if not isinstance(_advantages, _Advantage_Type):
+            _advantages = {}  # type: ignore
+        elif not isinstance(_advantages, _Advantage_Type):
             self._advantage = {obj.__class__.__name__: obj for obj in _advantages}  # THOUGHT: perhaps lower() the class name?
         else:
             self._advantage = {_advantages.__class__.__name__: _advantages}
 
     def update(self, char_sheet: dict):
-        # if 'advantage' in char_sheet:
-        #      self._advantage['advantage'] = char_sheet['advantage']
+        # if 'advantage_type' in char_sheet:
+        #      self._advantage['advantage_type'] = char_sheet['advantage_type']
         pass
 
     def __repr__(self):
         return str(self._advantage)
 
 
-class Advantage(_Advantage_Component_Base):
+class Advantage(_Advantage_Component):
     def __init__(self, advantages: Union[Set[_Advantage_Type], List[_Advantage_Type], _Advantage_Type] = None):
         if not advantages:
-            advantages = {}
+            advantages = {}  # type: ignore
         super().__init__(advantages)
 
     @property
@@ -48,10 +51,10 @@ class Advantage(_Advantage_Component_Base):
         return self._advantage
 
 
-class Disadvantage(_Advantage_Component_Base):
+class Disadvantage(_Advantage_Component):
     def __init__(self, disadvantages: Union[List[_Advantage_Type], Set[_Advantage_Type], _Advantage_Type] = None):
         if not disadvantages:
-            disadvantages = {}
+            disadvantages = {}  # type: ignore
         super().__init__(disadvantages)
 
     @property

@@ -9,13 +9,21 @@ class Component(ABC):
         """ Any subclass must overide the update function. """
 
 class Bollean(object):
-    """ Used for Components that are merely a bool value. 
+    """ Used for Components that are merely a bool value.
         For multiple inheritance other superclasses should
-        forward `bvalue` as a keyword argument so that it 
+        forward `bvalue` as a keyword argument so that it
         is used to initialise this class.
     """
 
-    def __init__(self, bvalue=True):
+    def __init__(self, *, bvalue=True):
+        self._bvalue = bvalue
+
+    @property
+    def bvalue(self):
+        return self._bvalue
+
+    @bvalue.setter
+    def bvalue(self, bvalue):
         self._bvalue = bvalue
 
     def __bool__(self):

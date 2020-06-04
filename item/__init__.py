@@ -6,12 +6,14 @@ from item.components import Component
 class Item(object):
     """ Basic class for any item (weapon, armor, ring, ...) acquired by the player. """
 
-    def __init__(self, components: Union[Set[Component], List[Component]] = None, name: str = 'Unamed Item'):
+    def __init__(self, components: Union[Set[Component], List[Component], Component] = None, name: str = 'Unamed Item'):
         self._components: Dict[str, Component] = {}
         if components:
-            self._components = {}
-            for component in components:
-                self._components[component.__class__.__name__] = component
+            if isinstance(components, Component):
+                self._components[components.__class__.__name__] = components
+            else:
+                for component in components:
+                    self._components[component.__class__.__name__] = component
         self._name = name
 
     def insert_component(self, *component):
@@ -37,5 +39,6 @@ class Item(object):
         self._components = components
 
     def __repr__(self):
-        return f"{self._name}\n" + ''.join(
-            [f"{comp_name.ljust(25, '.')} : {comp_obj}\n" for comp_name, comp_obj in self.components.items()])
+        return f"\n{self._name}\n" + \
+               ''.join(
+                   [f"{c_name.ljust(25, '.')} : {c_obj}\n" for c_name, c_obj in self.components.items()])

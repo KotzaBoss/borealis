@@ -4,6 +4,8 @@ from item.components import Component
 
 class Proficiency(Component):
     def __init__(self, ability: ABILITY = ABILITY.NONE):
+        if type(ability) != ABILITY:
+            raise TypeError("Ability must be type ABILITY.")
         self._ability = ability
 
     @property

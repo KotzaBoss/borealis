@@ -22,7 +22,9 @@ class Requirement(Component, Bollean):
 
 
 class AbilityRequirement(Requirement):
-    def __init__(self, value=-666, ability: ABILITY = ABILITY.NONE):
+    def __init__(self, *, value: int = -666, ability: ABILITY = ABILITY.NONE):
+        if any([type(value) != int, type(ability) != ABILITY]):
+            raise TypeError("Expected type int value, type ABILITY: ability")
         super().__init__({'value': value, 'ability': ability})
 
     def update(self, char_sheet: dict):

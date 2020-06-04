@@ -1,5 +1,7 @@
+from functools import wraps
+
 from enums import ABILITY
-from . import Component
+from item.components import Component
 
 
 def validate_input(func):
@@ -13,14 +15,15 @@ def validate_input(func):
             if argument of wrapped function is not subset of AC.AC_KEYS
     """
 
-    def wrapper(self, val=None):
-        if not val:
-            val = {}
-        if not type(val) == dict:
-            raise TypeError(f"type: '{type(val)}' is not legal value for {type(dict)} AC>")
-        elif not set(val.keys()).issubset(AC.AC_KEYS):
-            raise KeyError(f"{set(val.keys()).difference(AC.AC_KEYS)} are not valid AC keys.")
-        func(self, val)
+    @wraps(func)
+    def wrapper(self, arg=None):
+        if not arg:
+            arg = {}
+        if not type(arg) == dict:
+            raise TypeError(f"type: '{type(arg)}' is not legal argue for {type(dict)} AC>")
+        elif not set(arg.keys()).issubset(AC.AC_KEYS):
+            raise KeyError(f"{set(arg.keys()).difference(AC.AC_KEYS)} are not argid AC keys.")
+        func(self, arg)
 
     return wrapper
 

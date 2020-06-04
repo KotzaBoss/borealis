@@ -4,6 +4,7 @@ from . import Component
 
 
 class Mass(int):
+
     def __init__(self, value: int = -1):
         super().__init__()
         self._value = value

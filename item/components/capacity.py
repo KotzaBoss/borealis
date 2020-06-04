@@ -59,6 +59,8 @@ class CubicMeter(Volume):
 
 class Capacity(Component):
     def __init__(self, capacity: Union[CubicMeter, CubicFeet, int] = -1):
+        if type(capacity) not in {CubicMeter, CubicFeet, int}:
+            raise TypeError("Expected CubicMeter, CubicFeet, or int")
         if type(capacity) == int:  # isinstance wont help because volume subclasses int
             capacity = CubicFeet(capacity)
         self._capacity = capacity

@@ -4,6 +4,8 @@ from item.components import Component
 
 class Rarity(Component):
     def __init__(self, rarity: RARITY = RARITY.NONE):
+        if type(rarity) != RARITY:
+            raise TypeError(f"Expected {type(RARITY)}")
         self._rarity = rarity
 
     @property

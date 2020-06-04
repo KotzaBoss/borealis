@@ -2,7 +2,9 @@ from item.components import Component
 
 
 class Healing(Component):
-    def __init__(self, heal_points):
+    def __init__(self, heal_points: int = 0):
+        if type(heal_points) != int:
+            raise TypeError("Heal points must be int.")
         self._heal_points = heal_points
 
     @property

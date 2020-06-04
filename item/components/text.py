@@ -1,6 +1,5 @@
 from . import Component
 
-
 class Text(Component):
     def __init__(self, txt: str = ''):
         self._text = txt
