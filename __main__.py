@@ -17,7 +17,7 @@ from item.components.bonuses import ACBonus, DamageBonus
 from item.components.capacity import Capacity, CubicMeter
 from item.components.charges import Charges
 from item.components.consumable import Consumable
-from item.components.cost import Cost, CoinDict
+from item.components.cost import Cost
 from item.components.cursed import Cursed
 from item.components.damage_type import Resistance
 from item.components.dc import DC
@@ -33,9 +33,9 @@ from item.components.container import Container
 from lazy_test import item_creation_test
 from func_runner import func_runner
 
-item_creation_test(
+item = item_creation_test(
     [
-        AC({'flat ac': 10, 'dex cap': 2, 'dex': 5, 'use dex': True}),
+        AC(flat_ac=10, dex_cap=2, dex=5, use_dex=True),
         Weight(8),
         ArmorType(),
         DamageBonus(6),
@@ -46,7 +46,7 @@ item_creation_test(
         EffectDuration(4),
         DamageDice('1d8'),
         AbilityRequirement(value=14, ability=ABILITY.CHA),
-        Cost(),
+        Cost(platinum=1, silver=6),
         Capacity(CubicMeter(1)),
         Resistance({DAMAGETYPE.BLUDGEONING, DAMAGETYPE.MAGIC, DAMAGETYPE.NECROTIC}),
         Charges(3),
@@ -67,12 +67,15 @@ item_creation_test(
         Container(
             [
                 Item(name='tiem1'),
-                Item(Cost(CoinDict(platinum=6, silver=3)))
+                # Item(Cost(CoinDict(platinum=6, silver=3)))
             ]
         )
     ],
     name="Dragon's Vape"
 )
+
+item.components['Cost'][COIN.PLATINUM] = 666
+print(item.components['Cost']['a'])
 
 
 @func_runner(extra='lol', when='after')

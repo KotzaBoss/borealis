@@ -1,38 +1,36 @@
+from functools import total_ordering
+
 from enums import COIN
+from utils import validate_kwargs, validate_param_types
 from . import Component
 
 
-class CoinDict(dict):
-    coin_names = {'platinum', 'gold', 'electrum', 'silver', 'copper'}
-
-    def __init__(self, **kwargs):
-        super().__init__()
-        if not set(kwargs.keys()).issubset(self.coin_names):
-            raise KeyError(f"Invalid coin names: {set(kwargs.keys()).difference(self.coin_names)}")
-        elif not all(type(value) == int for value in kwargs.values()):
-            raise ValueError("All coin types must have int value")
-        else:
-            self._coins = {COIN.PLATINUM: kwargs['platinum'], COIN.GOLD: kwargs['gold'],
-                           COIN.ELECTRUM: kwargs['electrum'], COIN.SILVER: kwargs['silver'],
-                           COIN.COPPER: kwargs['copper']}
-
-    def __getitem__(self, item: COIN):
-        return self._coins[item]
-
-    def __setitem__(self, key: COIN, value: int):
-        self._coins[key] = value
-
-    def __repr__(self):
-        return str(self._coins)
-
-
+@total_ordering
 class Cost(Component):
     """ Cost dictionary {'p': 1, 'g': 15, 'e': 5, 's': 0, 'c': 1} """
+    kwcoins = {'platinum', 'gold', 'electrum', 'silver', 'copper'}
 
-    def __init__(self, cost: CoinDict = None):
-        if cost is None:
-            cost = CoinDict()
-        self._cost = cost
+    @validate_kwargs(kwcoins, {int})
+    def __init__(self, **kwargs):
+        self._cost = {getattr(COIN, key.upper()): val for key, val in kwargs.items()}
+
+    def __eq__(self, other):
+        return sum([value for value in self._cost.values()]) == \
+               sum([value] for value in other._cost.values())
+
+    def __lt__(self, other):
+        return sum([value for value in self._cost.values()]) == \
+               sum([value] for value in other._cost.values())
+
+    @validate_param_types([COIN])
+    def __getitem__(self, item: COIN):
+        return self._cost[item]
+
+    @validate_param_types([COIN, int])
+    def __setitem__(self, key: COIN, value: int):
+        if key not in {coin for coin in COIN}:
+            raise KeyError(f"{key} not a coin")
+        self._cost[key] = value
 
     @property
     def cost(self):
@@ -42,4 +40,4 @@ class Cost(Component):
         pass
 
     def __repr__(self):
-        return str({coin_type.name: self._cost[coin_type] for coin_type in self._cost})
+        return str({key: val for key, val in self._cost.items()})

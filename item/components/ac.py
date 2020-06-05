@@ -1,48 +1,23 @@
-from functools import wraps
-
 from enums import ABILITY
 from item.components import Component
-
-
-def validate_input(func):
-    """ Decorator for AC class setter functions.
-
-        Raises
-        ------
-        TypeError
-            If argument of wrapped function is not type(dict)
-        KeyError
-            if argument of wrapped function is not subset of AC.AC_KEYS
-    """
-
-    @wraps(func)
-    def wrapper(self, arg=None):
-        if not arg:
-            arg = {}
-        if not type(arg) == dict:
-            raise TypeError(f"type: '{type(arg)}' is not legal argue for {type(dict)} AC>")
-        elif not set(arg.keys()).issubset(AC.AC_KEYS):
-            raise KeyError(f"{set(arg.keys()).difference(AC.AC_KEYS)} are not argid AC keys.")
-        func(self, arg)
-
-    return wrapper
+from utils import validate_kwargs, validate_param_types
 
 
 class AC(Component):
-    AC_KEYS = {'flat ac', 'dex cap', 'dex', 'use dex'}
+    AC_KEYS = {'flat_ac', 'dex_cap', 'dex', 'use_dex'}
 
-    @validate_input
-    def __init__(self, ac: dict = None):
-        if not ac:
-            ac = {'flat ac': 0, 'dex cap': 0, 'dex': 0, 'use dex': False}
-        ac.update({'AC': 0})
-        self._ac = ac
+    @validate_kwargs(AC_KEYS, {int, bool})
+    def __init__(self, *, flat_ac: int = 0, dex_cap: int = 0, dex: int = 0, use_dex: bool = False):
+        self._ac = {'flat ac': flat_ac, 'dex cap': dex_cap, 'dex': dex,
+                    'use dex': use_dex, 'AC': 0}
         self.update_ac()
 
-    def __getitem__(self, item):
+    @validate_param_types([str])
+    def __getitem__(self, item: str):
         return self._ac[item]
 
-    def __setitem__(self, key, value):
+    @validate_param_types([str, int])
+    def __setitem__(self, key: str, value: int):
         if key not in self.AC_KEYS:
             raise KeyError(f"{key} not valid AC key.")
         self._ac[key] = value
@@ -65,10 +40,10 @@ class AC(Component):
     def ac(self):
         return self._ac
 
-    @validate_input  # type: ignore
+    @validate_kwargs(AC_KEYS, {int, bool})
     @ac.setter
-    def ac(self, value: dict):
-        self._ac.update(value)
+    def ac(self, **kwargs):
+        self._ac.update(**kwargs)
 
     def __repr__(self):
         return ' '.join(
