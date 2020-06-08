@@ -1,6 +1,8 @@
 import re
 from random import randint, seed
 
+from utils.enums import ABILITY
+
 
 def roll(expr: str, seed_=None):
     """ `expr` is expected to be:
@@ -16,7 +18,7 @@ def roll(expr: str, seed_=None):
         return 0
 
 
-def standard_table():
+def roll_standard_table():
     return [15, 14, 13, 12, 10, 8]
 
 
@@ -71,3 +73,14 @@ def roll_4d6_reroll1once_max3():
     rolls.sort(reverse=True)
     rolls = rolls[0:3]
     return rolls, sum(rolls)
+
+
+def roll_3d6():
+    rolls = [roll_d6() for _ in range(3)]
+    return rolls, sum(rolls)
+
+
+def roll_for_stats(roll_func=None):
+    if roll_func == roll_standard_table:
+        return roll_standard_table()
+    return [roll_func()[1] for _ in range(len(ABILITY) - 1)]
