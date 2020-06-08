@@ -1,6 +1,6 @@
 from typing import Any
 
-from enums import ARMORTYPE
+from utils.enums import ARMORTYPE
 from . import Component as Component
 
 

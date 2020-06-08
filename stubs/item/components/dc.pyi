@@ -1,6 +1,6 @@
 from typing import Any
 
-from enums import ABILITY
+from utils.enums import ABILITY
 from item.components import Component
 
 

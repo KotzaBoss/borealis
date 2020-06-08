@@ -1,6 +1,6 @@
 import pytest
 
-from item.components.cost import Cost, CoinDict, COIN
+from item.components.cost import Cost ,COIN
 
 
 @pytest.mark.parametrize(
@@ -14,7 +14,7 @@ from item.components.cost import Cost, CoinDict, COIN
 )
 def test_cost_values(p, g, e, s, c):
     with pytest.raises(ValueError):
-        cost = Cost(CoinDict(platinum=p, gold=g, electrum=e, silver=s, copper=c))
+        cost = Cost(platinum=p, gold=g, electrum=e, silver=s, copper=c)
 
 
 @pytest.mark.parametrize(
@@ -26,4 +26,4 @@ def test_cost_values(p, g, e, s, c):
 def test_cost_keys(p, g, e, s, c):
     keys = {p: 0, g: 0, e: 0, s: 0, c: 0}
     with pytest.raises(KeyError):
-        cost = Cost(CoinDict(**keys))
+        cost = Cost(**keys)

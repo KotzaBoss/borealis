@@ -1,4 +1,4 @@
-from enums import ABILITY
+from utils.enums import ABILITY
 from item.components import Component
 from utils import validate_kwargs, validate_param_types
 

@@ -1,7 +1,7 @@
 from functools import wraps
 from typing import Set, Any, Callable, Optional, Union, List
 
-from enums import Enum
+from utils.enums import Enum
 from item.components import Component
 
 

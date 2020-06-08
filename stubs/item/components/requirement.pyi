@@ -1,6 +1,6 @@
 from typing import Any, Dict, Union
 
-from enums import ABILITY
+from utils.enums import ABILITY
 from item.components import Bollean, Component
 
 

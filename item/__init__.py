@@ -40,5 +40,6 @@ class Item(object):
 
     def __repr__(self):
         return f"\n{self._name}\n" + \
-               ''.join(
-                   [f"{c_name.ljust(25, '.')} : {c_obj}\n" for c_name, c_obj in self.components.items()])
+              ''.join(
+                   [f"{c_name.ljust(25, '.')} : {c_obj}\n" for c_name, c_obj in self._components.items()]
+               )

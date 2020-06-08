@@ -1,6 +1,6 @@
 from typing import Any
 
-from enums import COIN
+from utils.enums import COIN
 from . import Component as Component
 
 

@@ -9,6 +9,11 @@ def roll(expr: str, seed_=None):
     if seed_:
         seed(seed_)
     if match := re.match(r'(\d+)d(\d+)', expr):
-        return int(match.group(1)) * randint(1, int(match.group(2)))
+        return sum(
+            [randint(1, int(match.group(2))) for _ in range(int(match.group(1)))]
+                   )
     else:
         return 0
+
+def standard_table():
+    return [15, 14, 13, 12, 10, 8]

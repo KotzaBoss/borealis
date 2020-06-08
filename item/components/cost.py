@@ -1,6 +1,6 @@
 from functools import total_ordering
 
-from enums import COIN
+from utils.enums import COIN
 from utils import validate_kwargs, validate_param_types
 from . import Component
 

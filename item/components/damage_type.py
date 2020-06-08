@@ -1,10 +1,11 @@
 from typing import Set
 
-from enums import DAMAGETYPE
+from utils.enums import DAMAGETYPE
 from item.components import Component
 
 
 class DamageType(Component):
+    # TODO make input **kwargs not set
     def __init__(self, dmg_types: Set[DAMAGETYPE] = None):
         if not dmg_types:
             dmg_types = set()

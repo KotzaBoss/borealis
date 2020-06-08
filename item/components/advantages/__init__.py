@@ -7,7 +7,7 @@ __all__ = ['Advantage', 'Disadvantage', 'OnAbilityCheck', 'OnAbilitySavingThrow'
 
 from typing import Union, List, Set
 
-from enums import ABILITY, CONDITION, SKILL
+from utils.enums import ABILITY, CONDITION, SKILL
 from item.components import Component, Bollean
 
 

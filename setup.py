@@ -7,7 +7,7 @@ setup(
     url='',
     license='',
     author='George Kotzampopoulos, Ioannis Psaradakis',
-    author_email='gkkotzas@gmail.com',
+    author_email='gkkotzas@gmail.com, psaradakisj@gmail.com',
     description='',
     install_requires=[
         'pytest',

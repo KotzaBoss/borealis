@@ -1,6 +1,6 @@
 from typing import Any
 
-from enums import RARITY
+from utils.enums import RARITY
 from item.components import Component
 
 

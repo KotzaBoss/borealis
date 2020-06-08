@@ -1,85 +1,29 @@
 import sys
-
 sys.path.append('/home/kotzaboss/Git')  # TODO:
+from utils.roll import standard_table
 
-from enums import *
-from item import Item
-from item.components.ac import AC
-from item.components.activated import Activated
-from item.components.advantages import OnAbilityCheck, \
-    OnAttack, \
-    Advantage, \
-    Disadvantage, \
-    OnConditionSavingThrow, \
-    OnSkill
-from item.components.armor_type import ArmorType
-from item.components.bonuses import ACBonus, DamageBonus
-from item.components.capacity import Capacity, CubicMeter
-from item.components.charges import Charges
-from item.components.consumable import Consumable
-from item.components.cost import Cost
-from item.components.cursed import Cursed
-from item.components.damage_type import Resistance
-from item.components.dc import DC
-from item.components.dice import DamageDice
-from item.components.durations import Don, EffectDuration
-from item.components.healing import Healing
-from item.components.rarity import Rarity, RARITY
-from item.components.requirement import AbilityRequirement
-from item.components.requirement import Attunement
-from item.components.silvered import Silvered
-from item.components.weight import Weight
-from item.components.container import Container
-from lazy_test import item_creation_test
-from func_runner import func_runner
+CMDS = ['new', 'import', 'exit']
+INIT_ROLLS = {'std': standard_table,
+              'pointbuy': None,
+              '3d6': None,
+              '4d6max3': None,
+              '4d6reroll1': None,
+              'custom': None}
 
-item = item_creation_test(
-    [
-        AC(flat_ac=10, dex_cap=2, dex=5, use_dex=True),
-        Weight(8),
-        ArmorType(),
-        DamageBonus(6),
-        ACBonus(88),
-        Rarity(RARITY.LEGENDARY),
-        DC(score=17, ability=ABILITY.DEX),
-        Don(2),
-        EffectDuration(4),
-        DamageDice('1d8'),
-        AbilityRequirement(value=14, ability=ABILITY.CHA),
-        Cost(platinum=1, silver=6),
-        Capacity(CubicMeter(1)),
-        Resistance({DAMAGETYPE.BLUDGEONING, DAMAGETYPE.MAGIC, DAMAGETYPE.NECROTIC}),
-        Charges(3),
-        Attunement(True),
-        Consumable(True),
-        Cursed(),
-        Activated(),
-        Silvered(True),
-        Healing(123),
-        Advantage(
-            {
-                OnAbilityCheck(ABILITY.DEX),
-                OnAttack(True),
-                OnConditionSavingThrow(CONDITION.CHARMED)
-            }
-        ),
-        Disadvantage({OnSkill(SKILL.ARCANA)}),
-        Container(
-            [
-                Item(name='tiem1'),
-                # Item(Cost(CoinDict(platinum=6, silver=3)))
-            ]
-        )
-    ],
-    name="Dragon's Vape"
-)
-
-item.components['Cost'][COIN.PLATINUM] = 666
-print(item.components['Cost']['a'])
+def get_input(*, expected=None, errmsg='', prompt='>>> '):
+    if not expected:
+        return input(prompt)
+    while True:
+        if (user := input(prompt)) not in expected:
+            print(f"{user}: {errmsg}")
+            continue
+        return user
 
 
-@func_runner(extra='lol', when='after')
-def foo(x):
-    return x + 1
-
-# roll_test(['1d20', '2d6', '1d100', '1d1', '1d 2', 'd2'])
+while True:
+    print(CMDS)
+    user = get_input(expected=CMDS, errmsg='Unavailable command')
+    if user == 'exit':
+        break
+    if user == 'new':
+        user = get_input(expected=INIT_ROLLS.keys(), errmsg='Unavailable roll type')

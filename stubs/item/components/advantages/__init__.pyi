@@ -1,6 +1,6 @@
 from typing import Any, List, Set, Union
 
-from enums import ABILITY, CONDITION, SKILL
+from utils.enums import ABILITY, CONDITION, SKILL
 from item.components import Bollean, Component
 
 

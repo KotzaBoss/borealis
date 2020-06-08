@@ -1,6 +1,6 @@
 from typing import Any, Set
 
-from enums import DAMAGETYPE as DAMAGETYPE
+from utils.enums import DAMAGETYPE as DAMAGETYPE
 from item.components import Component
 
 

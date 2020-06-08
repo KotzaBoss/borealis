@@ -15,7 +15,7 @@ __all__ = ['SkillBonus', 'InitiativeBonus', 'ACBonus', 'SavingThrowBonus',
 
 from typing import Union
 
-from enums import ABILITY
+from utils.enums import ABILITY
 from item.components import Component
 
 

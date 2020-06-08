@@ -1,6 +1,6 @@
 from typing import Any
 
-from enums import WEAPONPROPERTY
+from utils.enums import WEAPONPROPERTY
 from item.components import Component
 
 
