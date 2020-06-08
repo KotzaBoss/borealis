@@ -97,6 +97,8 @@ class ABILITY(Enum):
     CHA = 'CHA'
     NONE = 'NONE'
 
+    def __len__(self):
+        return 6
 
 class ARMORTYPE(Enum):
     HEAVY = 'H'

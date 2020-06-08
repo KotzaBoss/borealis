@@ -83,4 +83,4 @@ def roll_3d6():
 def roll_for_stats(roll_func=None):
     if roll_func == roll_standard_table:
         return roll_standard_table()
-    return [roll_func()[1] for _ in range(len(ABILITY) - 1)]
+    return [roll_func()[1] for _ in range(len(ABILITY))]
