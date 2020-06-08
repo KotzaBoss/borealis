@@ -12,8 +12,7 @@ class Item(object):
             if isinstance(components, Component):
                 self._components[components.__class__.__name__] = components
             else:
-                for component in components:
-                    self._components[component.__class__.__name__] = component
+                self._components = {component.__class__.__name__: component for component in components}
         self._name = name
 
     def insert_component(self, *component):

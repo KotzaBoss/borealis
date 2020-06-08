@@ -1,6 +1,7 @@
 from enum import Enum
 
 
+# TODO: fid all Enum.NONE and fix code
 class WEAPONTYPE(Enum):
     pass
 
@@ -26,7 +27,6 @@ class SKILL(Enum):
     STEALTH = 'STEALTH'
     STREETWISE = 'STREETWISE'
     SURVIVAL = 'SURVIVAL'
-    NONE = 'NONE'
 
 
 class CONDITION(Enum):
@@ -44,7 +44,6 @@ class CONDITION(Enum):
     RESTRAINED = 'RESTRAINED'
     STUNNED = 'STUNNED'
     UNCONSCIOUS = 'UNCONSCIOUS'
-    NONE = 'NONE'
 
 
 class RARITY(Enum):
@@ -54,7 +53,6 @@ class RARITY(Enum):
     RARE = 'RARE'
     VERY = 'VERY RARE'
     LEGENDARY = 'LEGENDARY'
-    NONE = 'NONE'
 
     # FUTURE: Can add methods for user references
     def describe(self):
@@ -76,7 +74,6 @@ class DAMAGETYPE(Enum):
     FORCE = 'FORCE'
     PSYCHIC = 'PSYCHIC'
     MAGIC = 'MAGIC'
-    NONE = 'NONE'
 
 
 class COIN(Enum):
@@ -85,7 +82,6 @@ class COIN(Enum):
     ELECTRUM = 'E'
     SILVER = 'S'
     COPPER = 'C'
-    NONE = 'NONE'
 
 
 class ABILITY(Enum):
@@ -95,10 +91,7 @@ class ABILITY(Enum):
     WIS = 'WIS'
     INT = 'INT'
     CHA = 'CHA'
-    NONE = 'NONE'
 
-    def __len__(self):
-        return 6
 
 class ARMORTYPE(Enum):
     HEAVY = 'H'
@@ -119,4 +112,3 @@ class WEAPONPROPERTY(Enum):
     THROWN = 'THROWN'
     TWOHANDED = 'TWOHANDED'
     VERSITILE = 'VERSITILE'
-    NONE = 'NONE'

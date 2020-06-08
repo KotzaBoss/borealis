@@ -50,7 +50,7 @@ def roll_d100():
     return randint(1, 100)
 
 
-def roll_d10000():
+def roll_d10000():  # Wild Magik
     return randint(1, 10000)
 
 
