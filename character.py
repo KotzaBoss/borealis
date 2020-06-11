@@ -1,4 +1,3 @@
-from collections import namedtuple
 from typing import List, Dict
 
 from item import Item
@@ -12,10 +11,9 @@ class Character(object):
         self.name = name
         if not init_rolls:
             init_rolls = roll_standard_table()
-        for i, ab in enumerate(ABILITY):
-            self.abilities: Dict[ABILITY, Ability] = {ability: Ability(name=ability, base=init_rolls[i])
-                                                      for i, ability in enumerate(ABILITY)}
-        self.items = items
+        self.abilities: Dict[ABILITY, Ability] = \
+            {ability: Ability(name=ability, base=init_rolls[i]) for i, ability in enumerate(ABILITY)}
+        self.items = items if items else []
 
 
 class AbilityOverseer(object):
@@ -23,42 +21,52 @@ class AbilityOverseer(object):
         self._abilities = char_sheet.abilities
         self._items = char_sheet.items
 
-    def get_manipulators(self):
-        score_setters = namedtuple('ScoreSetters', ['score_setters'])(score_setters=[])
-        max_setters = namedtuple('MaxSetters', ['max_setters'])(max_setters=[])
-        score_changers = namedtuple('ScoreChangers', ['score_changers'])(score_changers=[])
-        for ability_name, ability in self._abilities.items():
+    def get_manipulators(self, ability: ABILITY = None):
+        score_setters: Dict[ABILITY, List[Ability]] = {ab: [] for ab in ABILITY}
+        max_setters: Dict[ABILITY, List[Ability]] = {ab: [] for ab in ABILITY}
+        score_changers: Dict[ABILITY, List[Ability]] = {ab: [] for ab in ABILITY}
+        abilities = self._abilities.keys() if not ability else [ability]
+        for ability in abilities:
             for item in self._items:
                 for component in item.components.values():
-                    if type(component) == ScoreSetter and component.ability == ability_name:
-                        score_setters.score_setters.append(component)
-                    elif type(component) == ScoreMaxSetter and component.ability == ability_name:
-                        max_setters.max_setters.append(component)
-                    elif type(component) == ScoreChanger and component.ability == ability_name:
-                        score_changers.score_changers.append(component)
+                    if type(component) == ScoreSetter and component.ability == ability:
+                        score_setters[ability].append(component)
+                    elif type(component) == ScoreMaxSetter and component.ability == ability:
+                        max_setters[ability].append(component)
+                    elif type(component) == ScoreChanger and component.ability == ability:
+                        score_changers[ability].append(component)
         return score_setters, max_setters, score_changers
 
-    def calculate(self):
-        for ability_name, ability in self._abilities.items():
-            if ability.user_override:
-                self._abilities[ability_name] = ability.user_override
-                continue
-            for item in self._items:
-                pass
-                # setters: List[ScoreSetter] = [component for component in item.components.values()
-                #                               if type(component) == ScoreSetter and component.ability == ability_name]
-                # if setters:
-                #     ability.score = max([setter.score for setter in setters])
-                # elif ScoreMaxSetter in component_types:
-                #     'set ability max'
-                # elif ScoreChanger in component_types:
-                #     'change score'
+    def calculate_ability_scores(self):
+        score_setters, max_setters, score_changers = self.get_manipulators()
+        for ability, obj in self._abilities.items():
+            if obj.user_override:
+                self._abilities[ability] = obj.user_override
+            elif score_setters[ability]:
+                for setter in score_setters[ability]:
+                    self._abilities[ability].score = setter.score
+                    break  # TODO: for multiple same score manipulators what is the priority?
+            elif max_setters[ability]:
+                for max_setter in max_setters[ability]:
+                    self._abilities[ability].max = max_setter.score
+                    break
+            elif score_changers[ability]:
+                for changer in score_changers[ability]:
+                    self._abilities[ability].score += changer.score
+                    break
 
 
 class Ability(object):
     def __init__(self, *, name=None, base=0):
         self.max = 20
-        self.score = None
+        self.score = base
         self.user_override = None
         self.base = base
         self.name = name
+
+    def __repr__(self):
+        s = f"{self.__class__.__name__}("
+        for k, v in self.__dict__.items():
+            s += f"{k}={v}, "
+        s += "\b\b)"
+        return s

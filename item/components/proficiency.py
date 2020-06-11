@@ -1,9 +1,9 @@
-from utils.enums import ABILITY
 from item.components import Component
+from utils.enums import ABILITY
 
 
 class Proficiency(Component):
-    def __init__(self, ability: ABILITY = ABILITY.NONE):
+    def __init__(self, ability: ABILITY = None):
         if type(ability) != ABILITY:
             raise TypeError("Ability must be type ABILITY.")
         self._ability = ability
@@ -19,5 +19,3 @@ class Proficiency(Component):
     def update(self, char_sheet: dict):
         pass
 
-    def __repr__(self):
-        return self._ability.name

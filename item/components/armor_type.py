@@ -3,7 +3,7 @@ from . import Component
 
 
 class ArmorType(Component):
-    def __init__(self, arm_type: ARMORTYPE = ARMORTYPE.NONE):
+    def __init__(self, arm_type: ARMORTYPE = None):
         self._arm_type: ARMORTYPE = arm_type
 
     @property
@@ -17,5 +17,3 @@ class ArmorType(Component):
     def update(self, char_sheet: dict):
         pass
 
-    def __repr__(self):
-        return str(self._arm_type.name)

@@ -14,6 +14,3 @@ class Text(Component):
 
     def update(self, char_sheet: dict):
         pass
-
-    def __repr__(self):
-        return self.text

@@ -1,12 +1,17 @@
 from enum import Enum
 
 
-# TODO: fid all Enum.NONE and fix code
-class WEAPONTYPE(Enum):
+class BaseEnum(Enum):
+    def __str__(self):
+        return self.name
+
+
+# TODO [CONFIRM DONE]: fid all BaseEnum.NONE and fix code
+class WEAPONTYPE(BaseEnum):
     pass
 
 
-class SKILL(Enum):
+class SKILL(BaseEnum):
     ACROBATICS = 'ACROBATICS'
     ANIMAL_HANDLING = 'ANIMAL_HANDLING'
     ARCANA = 'ARCANA'
@@ -29,7 +34,7 @@ class SKILL(Enum):
     SURVIVAL = 'SURVIVAL'
 
 
-class CONDITION(Enum):
+class CONDITION(BaseEnum):
     BLINDED = 'BLINDED'
     CHARMED = 'CHARMED'
     DEAFENED = 'DEAFENED'
@@ -46,7 +51,7 @@ class CONDITION(Enum):
     UNCONSCIOUS = 'UNCONSCIOUS'
 
 
-class RARITY(Enum):
+class RARITY(BaseEnum):
     MUNDANE = 'MUNDANE'
     COMMON = 'COMMON'
     UNCOMMON = 'UNCOMMON'
@@ -59,7 +64,7 @@ class RARITY(Enum):
         return f"Description of {self.name}"
 
 
-class DAMAGETYPE(Enum):
+class DAMAGETYPE(BaseEnum):
     SLASHING = 'SLASHING'
     PIERCING = 'PIERCING'
     BLUDGEONING = 'BLUDGEONING'
@@ -76,7 +81,7 @@ class DAMAGETYPE(Enum):
     MAGIC = 'MAGIC'
 
 
-class COIN(Enum):
+class COIN(BaseEnum):
     PLATINUM = 'P'
     GOLD = 'G'
     ELECTRUM = 'E'
@@ -84,7 +89,7 @@ class COIN(Enum):
     COPPER = 'C'
 
 
-class ABILITY(Enum):
+class ABILITY(BaseEnum):
     STR = 'STR'
     DEX = 'DEX'
     CON = 'CON'
@@ -93,14 +98,14 @@ class ABILITY(Enum):
     CHA = 'CHA'
 
 
-class ARMORTYPE(Enum):
+class ARMORTYPE(BaseEnum):
     HEAVY = 'H'
     MEDIUM = 'M'
     LIGHT = 'L'
     NONE = 'N'
 
 
-class WEAPONPROPERTY(Enum):
+class WEAPONPROPERTY(BaseEnum):
     AMMUNITION = 'AMMUNITION'
     FINESSE = 'FINESSE'
     HEAVY = 'HEAVY'

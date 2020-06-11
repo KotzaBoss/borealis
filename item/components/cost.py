@@ -1,7 +1,7 @@
 from functools import total_ordering
 
-from utils.enums import COIN
 from utils import validate_kwargs, validate_param_types
+from utils.enums import COIN
 from . import Component
 
 
@@ -39,5 +39,3 @@ class Cost(Component):
     def update(self, char_sheet: dict):
         pass
 
-    def __repr__(self):
-        return str({key: val for key, val in self._cost.items()})

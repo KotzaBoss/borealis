@@ -1,9 +1,9 @@
 from typing import Any
 
-from item.components import Bollean, Component
+from item.components import Boolean, Component
 
 
-class Silvered(Component, Bollean):
+class Silvered(Component, Boolean):
     def __init__(self, bvalue: bool = ...) -> None: ...
 
     def update(self, char_sheet: dict) -> Any: ...

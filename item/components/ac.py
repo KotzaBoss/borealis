@@ -1,6 +1,6 @@
-from utils.enums import ABILITY
 from item.components import Component
 from utils import validate_kwargs, validate_param_types
+from utils.enums import ABILITY
 
 
 class AC(Component):
@@ -45,9 +45,3 @@ class AC(Component):
     def ac(self, **kwargs):
         self._ac.update(**kwargs)
 
-    def __repr__(self):
-        return ' '.join(
-            [str(self._ac['AC']),
-             str({key: val for key, val in self._ac.items() if key != 'AC'})
-             ]
-        )

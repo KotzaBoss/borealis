@@ -31,8 +31,6 @@ class Duration(Component):
     def update(self, char_sheet: dict):
         pass
 
-    def __repr__(self):
-        return str(self._duration)
 
 
 class Don(Duration):

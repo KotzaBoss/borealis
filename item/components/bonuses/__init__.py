@@ -15,8 +15,8 @@ __all__ = ['SkillBonus', 'InitiativeBonus', 'ACBonus', 'SavingThrowBonus',
 
 from typing import Union
 
-from utils.enums import ABILITY
 from item.components import Component
+from utils.enums import ABILITY
 
 
 class Bonus(Component):
@@ -36,12 +36,6 @@ class Bonus(Component):
             pass
         else:
             pass
-
-    def __repr__(self):
-        if isinstance(self._bonus, ABILITY):
-            return self._bonus.name
-        else:
-            return str(self._bonus)
 
 
 class ACBonus(Bonus):
@@ -100,5 +94,5 @@ class SpellSaveDCBonus(Bonus):
 
 
 class DamageBonusViaAbilityModifier(Bonus):
-    def __init__(self, bonus=ABILITY.NONE):
+    def __init__(self, bonus=None):
         super().__init__(bonus)

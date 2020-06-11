@@ -6,7 +6,7 @@ from item.components import Component
 class Item(object):
     """ Basic class for any item (weapon, armor, ring, ...) acquired by the player. """
 
-    def __init__(self, components: Union[Set[Component], List[Component], Component] = None, name: str = 'Unamed Item'):
+    def __init__(self, components: Union[Set[Component], List[Component], Component] = None, *, name: str = 'Unamed Item'):
         self._components: Dict[str, Component] = {}
         if components:
             if isinstance(components, Component):

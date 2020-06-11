@@ -10,5 +10,5 @@ test:
 
 stubs:
 	stubgen $(BOREALIS) -o $(STUBDIR)
-	mv $(STUBDIR)/borealis/* $(STUBDIR)
-	rm -r $(STUBDIR)/borealis
+	rsync -a $(STUBDIR)/borealis/ $(STUBDIR)
+	rm -r $(STUBDIR)/borealis $(STUBDIR)/stubs $(STUBDIR)/stubs.*

@@ -24,5 +24,3 @@ class Charges(Component):
     def update(self, char_sheet: dict):
         pass
 
-    def __repr__(self):
-        return str(self._charges)

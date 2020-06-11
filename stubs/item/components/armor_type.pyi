@@ -1,6 +1,6 @@
 from typing import Any
 
-from utils.enums import ARMORTYPE
+from utils.enums import ARMORTYPE as ARMORTYPE
 from . import Component as Component
 
 
@@ -9,8 +9,6 @@ class ArmorType(Component):
 
     @property
     def armor_type(self): ...
-
     @armor_type.setter
     def armor_type(self, armtype: ARMORTYPE) -> Any: ...
-
     def update(self, char_sheet: dict) -> Any: ...

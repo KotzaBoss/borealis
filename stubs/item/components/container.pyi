@@ -1,17 +1,17 @@
-from typing import Any, List, Union
+from typing import Any
 
-from item import Item
-from item.components import Bollean, Component
+from item import Item as Item
+from item.components import Boolean, Component
 
 
-class Container(Component, Bollean):
-    def __init__(self, stuff: Union[List[Item], Item] = ...) -> None: ...
+class Container(Component, Boolean):
+    def __init__(self, *stuff: Item) -> None: ...
 
     def __getitem__(self, item: Any): ...
 
     @property
     def container(self): ...
 
-    def add(self, new_item: Union[List[Item], Item]) -> Any: ...
+    def add(self, *new_items: Item) -> Any: ...
 
     def update(self, char_sheet: dict) -> Any: ...

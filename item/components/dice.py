@@ -32,8 +32,6 @@ class Dice(Component):
     def update(self, char_sheet: dict):
         pass
 
-    def __repr__(self):
-        return f"{self._dnum}d{self._dtype}"
 
 
 class DamageDice(Dice):

@@ -26,9 +26,6 @@ class ScoreManipulator(Component):
     def update(self, char_sheet: dict):
         pass
 
-    def __repr__(self):
-        return f"{self._score} {self._ability.name}"
-
 
 class ScoreSetter(ScoreManipulator):
     def __init__(self, score: int = 0, ability=None):

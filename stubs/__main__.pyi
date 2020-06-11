@@ -1,4 +1,7 @@
-from typing import Any
+from typing import Any, Optional
+
+CMDS: Any
+INIT_ROLLS: Any
 
 
-def foo(x: Any): ...
+def get_input(*, expected: Optional[Any] = ..., errmsg: str = ..., prompt: Optional[Any] = ...): ...

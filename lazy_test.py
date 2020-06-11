@@ -1,5 +1,4 @@
 from item import Item
-from utils.enums import *
 from item.components.ac import AC
 from item.components.activated import Activated
 from item.components.advantages import OnAbilityCheck, \
@@ -13,6 +12,7 @@ from item.components.bonuses import ACBonus, DamageBonus
 from item.components.capacity import Capacity, CubicMeter
 from item.components.charges import Charges
 from item.components.consumable import Consumable
+from item.components.container import Container
 from item.components.cost import Cost
 from item.components.cursed import Cursed
 from item.components.damage_type import Resistance
@@ -20,14 +20,14 @@ from item.components.dc import DC
 from item.components.dice import DamageDice
 from item.components.durations import Don, EffectDuration
 from item.components.healing import Healing
-from item.components.rarity import Rarity, RARITY
+from item.components.rarity import Rarity
 from item.components.requirement import AbilityRequirement
 from item.components.requirement import Attunement
 from item.components.silvered import Silvered
 from item.components.weight import Weight
-from item.components.container import Container
-from utils.func_runner import func_runner
+from utils.enums import *
 from utils.roll import roll
+
 
 def item_creation_test(components, name='Unamed Item'):
     item = Item(name=name, components=components)
@@ -56,7 +56,7 @@ if __name__ == '__main__':
             AbilityRequirement(value=14, ability=ABILITY.CHA),
             Cost(platinum=1, silver=6),
             Capacity(CubicMeter(1)),
-            Resistance({DAMAGETYPE.BLUDGEONING, DAMAGETYPE.MAGIC, DAMAGETYPE.NECROTIC}),
+            Resistance(DAMAGETYPE.BLUDGEONING, DAMAGETYPE.MAGIC, DAMAGETYPE.NECROTIC),
             Charges(3),
             Attunement(True),
             Consumable(True),
@@ -65,20 +65,16 @@ if __name__ == '__main__':
             Silvered(True),
             Healing(123),
             Advantage(
-                {
-                    OnAbilityCheck(ABILITY.DEX),
-                    OnAttack(True),
-                    OnConditionSavingThrow(CONDITION.CHARMED)
-                }
+                OnAbilityCheck(ABILITY.DEX),
+                OnAttack(True),
+                OnConditionSavingThrow(CONDITION.CHARMED)
+
             ),
-            Disadvantage({OnSkill(SKILL.ARCANA)}),
+            Disadvantage(OnSkill(SKILL.ARCANA)),
             Container(
-                [
-                    Item(name='tiem1'),
-                    # Item(Cost(CoinDict(platinum=6, silver=3)))
-                ]
+                Item(name='tiem1'),
+                # Item(Cost(CoinDict(platinum=6, silver=3)))
             )
         ],
         name="Dragon's Vape"
     )
-

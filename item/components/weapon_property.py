@@ -1,9 +1,9 @@
-from utils.enums import WEAPONPROPERTY
 from item.components import Component
+from utils.enums import WEAPONPROPERTY
 
 
 class WeaponProperty(Component):
-    def __init__(self, property_: WEAPONPROPERTY = WEAPONPROPERTY.NONE):
+    def __init__(self, property_: WEAPONPROPERTY = None):
         self._property = property_
 
     @property
@@ -17,5 +17,3 @@ class WeaponProperty(Component):
     def update(self, char_sheet: dict):
         pass
 
-    def __repr__(self):
-        return self.property.name

@@ -1,12 +1,9 @@
-from item.components import Component, Bollean
+from item.components import Component, Boolean
 
 
-class Cursed(Component, Bollean):
+class Cursed(Component, Boolean):
     def __init__(self, bvalue: bool = False):
         super().__init__(bvalue=bvalue)
 
     def update(self, char_sheet: dict):
         pass
-
-    def __repr__(self):
-        return str(self._bvalue)

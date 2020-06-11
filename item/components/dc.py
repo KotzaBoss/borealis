@@ -1,9 +1,9 @@
-from utils.enums import ABILITY
 from item.components import Component
+from utils.enums import ABILITY
 
 
 class DC(Component):
-    def __init__(self, score: int = -666, ability: ABILITY = ABILITY.NONE):
+    def __init__(self, score: int = -666, ability: ABILITY = None):
         self._score = score
         self._ability = ability
 
@@ -25,6 +25,3 @@ class DC(Component):
 
     def update(self, char_sheet: dict):
         pass
-
-    def __repr__(self):
-        return f"{str(self._score)} against {str(self._ability.name)}"
