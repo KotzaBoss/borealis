@@ -1,13 +1,18 @@
 from __future__ import annotations
 
 from components import Component
-from utils.enums import ABILITY
 
 
 class ScoreManipulator(Component):
-    def __init__(self, score: int = 0, ability: ABILITY = None):
+    """ Base class for any object that changes a resource.
+    `resource` may be an ability, that should be manipulated by the `score`
+
+    Who should provide the logic behind the manipulation? The overseer?
+    """
+
+    def __init__(self, score: int = 0, resource=None):
         self._score = score
-        self._ability = ability
+        self._resource = resource
 
     @property
     def score(self):
@@ -18,27 +23,24 @@ class ScoreManipulator(Component):
         self._score = score
 
     @property
-    def ability(self):
-        return self._ability
+    def resource(self):
+        return self._resource
 
-    @ability.setter
-    def ability(self, ability: ABILITY):
-        self._ability = ability
+    @resource.setter
+    def resource(self, resource):
+        self._resource = resource
 
     def update(self, char: Character):
         pass
 
 
-class ScoreSetter(ScoreManipulator):
-    def __init__(self, score: int = 0, ability=None):
-        super().__init__(score=score, ability=ability)
+class Setter(ScoreManipulator):
+    pass
 
 
-class ScoreChanger(ScoreManipulator):
-    def __init__(self, score: int = 0, ability=None):
-        super().__init__(score=score, ability=ability)
+class Changer(ScoreManipulator):
+    pass
 
 
-class ScoreMaxSetter(ScoreManipulator):
-    def __init__(self, score: int = 0, ability=None):
-        super().__init__(score=score, ability=ability)
+class MaxSetter(ScoreManipulator):
+    pass

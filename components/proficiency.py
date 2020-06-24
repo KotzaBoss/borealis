@@ -1,22 +1,22 @@
 from __future__ import annotations
 
 from components import Component
-from utils.enums import ABILITY
 
 
 class Proficiency(Component):
-    def __init__(self, ability: ABILITY = None):
-        if type(ability) != ABILITY:
-            raise TypeError("Ability must be type ABILITY.")
-        self._ability = ability
+    def __init__(self, resource):
+        self._resource = resource
+
+    def __eq__(self, other):
+        return self._resource == other._resource
 
     @property
-    def ability(self):
-        return self._ability
+    def resource(self):
+        return self._resource
 
-    @ability.setter
-    def ability(self, ability):
-        self._ability = ability
+    @resource.setter
+    def resource(self, resource):
+        self._resource = resource
 
     def update(self, char: Character):
         pass

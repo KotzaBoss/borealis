@@ -16,12 +16,13 @@ class Cost(Component):
     def __init__(self, **kwargs):
         self._cost = {getattr(COIN, key.upper()): val for key, val in kwargs.items()}
 
+
     def __eq__(self, other):
         return sum([value for value in self._cost.values()]) == \
                sum([value] for value in other._cost.values())
 
     def __lt__(self, other):
-        return sum([value for value in self._cost.values()]) == \
+        return sum([value for value in self._cost.values()]) < \
                sum([value] for value in other._cost.values())
 
     @validate_param_types([COIN])

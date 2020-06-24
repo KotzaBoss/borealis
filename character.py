@@ -1,13 +1,20 @@
 from __future__ import annotations
 
-from typing import List, Dict
+from functools import total_ordering
+from typing import List, Dict, Union
 
+from components.proficiency import Proficiency
 from utils.enums import ABILITY
 from utils.roll import roll_standard_table
 
 
 class Character(object):
-    def __init__(self, *, init_rolls=None, items: List[ComponentCollection] = None, name: str = '-=>NONAME<=-'):
+    def __init__(self, *,
+                 init_rolls=None,
+                 items: List[ComponentCollection] = None,
+                 feats: List[ComponentCollection] = None,
+                 proficiencies: List[Proficiency] = None,
+                 name: str = '-=>NONAME<=-'):
         self._name = name
         self._inspiration = 0
         self._proficiency = 0
@@ -17,7 +24,8 @@ class Character(object):
         self._hp = {}
         self._hit_dice = 0
         self._features = {}
-        self._proficiencies = []
+        self._feats = feats
+        self._proficiencies = proficiencies
         self._spells = {}  # spell sheets?
         if not init_rolls:
             init_rolls = roll_standard_table()
@@ -28,6 +36,11 @@ class Character(object):
 
     def __eq__(self, other):
         return all([self._name == other._name, self._abilities == other._abilities, self._items == other._items])
+
+    def __contains__(self, item: Proficiency):
+        """ Check if item in attribute depending on type. """
+        if isinstance(item, Prociciency):
+            return item.resource in self._proficiencies
 
     @property
     def name(self):
@@ -142,19 +155,32 @@ class Character(object):
         self._items = val
 
     def __repr__(self):
-        return f"{self._name}\n{self._abilities}\n{self._items}"
+        return str(self.__dict__.items())
+        # return f"{self._name}\n{self._abilities}\n{self._items}"
 
+
+@total_ordering
 class Ability(object):
-    def __init__(self, *, name=None, base=0):
+    def __init__(self, *, name: ABILITY = None, base=0):
         self.max = 20
         self.score = base
         self.user_override = None
         self.base = base
         self.name = name
 
-    def __eq__(self, other: Ability):
-        return all([self.base == other.base, self.max == other.max, self.user_override == other.user_override,
-                    self.score == other.score, self.name == other.name])
+    def __eq__(self, other: Union[Ability, int]):
+        if isinstance(other, Ability):
+            return self.score == other.score
+        else:
+            return self.score == other
+        # return all([self.base == other.base, self.max == other.max, self.user_override == other.user_override,
+        #             self.score == other.score, self.name == other.name])
+
+    def __lt__(self, other: Union[Ability, int]):
+        if isinstance(other, Ability):
+            return self.score < other.score
+        else:
+            return self.score < other
 
     def __repr__(self):
         s = f"{self.__class__.__name__}("

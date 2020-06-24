@@ -1,13 +1,16 @@
 from __future__ import annotations
 
-from typing import Union, Dict
+from typing import Union
 
 from components import Component, Boolean
+from components.proficiency import Proficiency
 from utils.enums import ABILITY
 
 
 class Requirement(Component, Boolean):
-    def __init__(self, requirement: Union[Dict[str, Union[int, ABILITY]], bool], **kwargs):
+    """ Base class for requirements/prerequisites. """
+
+    def __init__(self, requirement: Union[int, bool, ABILITY, Proficiency], **kwargs):
         super().__init__(**kwargs)  # forward keyword arguments (used by Bollean class)
         self._requirement = requirement
 
@@ -24,16 +27,33 @@ class Requirement(Component, Boolean):
 
 
 class AbilityRequirement(Requirement):
-    def __init__(self, *, value: int = -666, ability: ABILITY = None):
-        if any([type(value) != int, type(ability) != ABILITY]):
-            raise TypeError("Expected type int value, type ABILITY: ability")
-        super().__init__({'value': value, 'ability': ability})
+    def __init__(self, *abilities: Ability):
+        super().__init__(abilities)
 
     def update(self, char: Character):
         pass
 
     def __repr__(self):
-        return f"{self._requirement['ability'].name} > {self._requirement['value']}"
+        s = f'{self.__class__.__name__}('
+        for req in [f"{abil.name} > {abil.score}" for abil in self._requirement]:
+            s += req + ' or '
+        s += '\b\b\b\b)'
+        return s
+
+
+class ProficiencyRequirement(Requirement):
+    def __init__(self, *proficiencies: Proficiency):
+        super().__init__(proficiencies)
+
+    def update(self, char: Character):
+        pass
+
+    # def __repr__(self):
+    #     s = f'{self.__class__.__name__}('
+    #     for req in [f"{prof.resource}prof.score}" for prof in self._requirement]:
+    #         s += req + ' or '
+    #     s += '\b\b\b\b)'
+    #     return s
 
 
 class Attunement(Requirement):

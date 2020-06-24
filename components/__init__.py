@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Dict
+from typing import List
 
 
 class Component(ABC):
@@ -22,15 +22,9 @@ class Component(ABC):
 class ComponentCollection(ABC):
     """ Astract Base Class for Items, Features, Spells, Feats, ... """
 
-    def __init__(self, *components: Component, name: str = 'Unamed Item'):
-        self._components: Dict[str, Component] = {component.__class__.__name__: component for component in components}
+    def __init__(self, *components: Component, name: str = 'Unamed ComponentCollection'):
+        self._components: List[Component] = [component for component in components]
         self._name = name
-
-    def insert_component(self, *components):
-        for comp in components:
-            if comp.__class__.__name__ in self._components.keys():
-                raise KeyError(f"{comp.__class__.__name__} already a component of item: {self._name}.")
-            self.components[comp.__class__.__name__] = comp
 
     @property
     def name(self):
@@ -51,7 +45,7 @@ class ComponentCollection(ABC):
     def __repr__(self):
         return f"\n{self._name}\n" + \
                ''.join(
-                   [f"{c_name.ljust(25, '.')} : {c_obj}\n" for c_name, c_obj in self._components.items()]
+                   [f"{comp.__class__.__name__.ljust(25, '.')} : {comp}\n" for comp in self._components]
                )
 
 

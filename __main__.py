@@ -3,9 +3,8 @@ import sys
 
 sys.path.append(os.path.abspath(__file__ + "/../../"))  # 9000 IQ move
 
-from overlord import Azathoth
-
 CMDS = ['new', 'import', 'exit', 'roll']
+
 
 def get_input(*, expected=None, errmsg='', prompt=None):
     """ Automates getting input from user.
@@ -24,5 +23,17 @@ def get_input(*, expected=None, errmsg='', prompt=None):
 
 
 if __name__ == '__main__':
-    s = '1d6'
-    print(Azathoth.awaken("roll " + s))
+    from components.score_manipulator import Setter
+    from character import Character
+    from character import Ability
+    from utils.enums import ABILITY
+    from item import Item
+    from overseer import AbilityOverseer
+
+    ch = Character(items=[
+        Item(Setter(score=10, resource=Ability(name=ABILITY.STR)))
+    ]
+    )
+    print(ch.abilities)
+    AbilityOverseer.calculate_ability_scores(ch)
+    print(ch.abilities)

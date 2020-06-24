@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
-from character import Ability
 from character import Character
-from components.score_manipulator import ScoreChanger, ScoreSetter, ScoreMaxSetter
+from components.score_manipulator import Changer, Setter, MaxSetter, ScoreManipulator
 from utils.enums import ABILITY
 
 
@@ -23,22 +22,28 @@ class AbilityOverseer(Overseer):
 
     @classmethod
     def get_manipulators(cls, char: Character):
-        score_setters: Dict[ABILITY, List[Ability]] = {ab: [] for ab in ABILITY}
-        max_setters: Dict[ABILITY, List[Ability]] = {ab: [] for ab in ABILITY}
-        score_changers: Dict[ABILITY, List[Ability]] = {ab: [] for ab in ABILITY}
+        """ For each ability parse Component Collections and fill dictionaries for the 3
+        categories of score manipulator
+        """
+        score_setters: Dict[ABILITY, List[ScoreManipulator]] = {ab: [] for ab in ABILITY}
+        max_setters: Dict[ABILITY, List[ScoreManipulator]] = {ab: [] for ab in ABILITY}
+        score_changers: Dict[ABILITY, List[ScoreManipulator]] = {ab: [] for ab in ABILITY}
         for ability in char.abilities:
             for item in char.items:
                 for component in item.components.values():
-                    if type(component) == ScoreSetter and component.ability == ability:
+                    if isinstance(component, Setter) and component.resource.name == ability:
                         score_setters[ability].append(component)
-                    elif type(component) == ScoreMaxSetter and component.ability == ability:
+                    elif isinstance(component, MaxSetter) and component.resource.name == ability:
                         max_setters[ability].append(component)
-                    elif type(component) == ScoreChanger and component.ability == ability:
+                    elif isinstance(component, Changer) and component.resource.name == ability:
                         score_changers[ability].append(component)
         return score_setters, max_setters, score_changers
 
     @classmethod
     def calculate_ability_scores(cls, char: Character):
+        """ For each type of ability score manipulaotor (ScoreManipulator with Ability resource),
+        perform calculations
+        """
         score_setters, max_setters, score_changers = cls.get_manipulators(char)
         for ability, ability_obj in char.abilities.items():
             if ability_obj.user_override:
