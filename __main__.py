@@ -5,7 +5,7 @@ from character import Character
 sys.path.append('/home/kotzaboss/Git')  # TODO:
 
 from utils.roll import roll_3d6, roll_4d6_max3, roll_standard_table, roll_4d6_reroll1once_max3
-from character import AbilityOverseer
+from overseer import AbilityOverseer, Cthulhu
 from item import Item
 from item.components.score_manipulator import ScoreMaxSetter, ScoreChanger, ScoreSetter
 from utils.enums import ABILITY
@@ -36,19 +36,18 @@ def get_input(*, expected=None, errmsg='', prompt=None):
 
 
 if __name__ == '__main__':
-    c = AbilityOverseer(
-        (ch := Character(items=[
-            Item(ScoreMaxSetter(ability=ABILITY.DEX, score=123)),
-            Item(ScoreSetter(ability=ABILITY.STR, score=1)),
-            Item(ScoreChanger(ability=ABILITY.INT, score=90))
-        ])
-         )
-    )
+    ch = Character(items=[
+        Item(ScoreMaxSetter(ability=ABILITY.DEX, score=123)),
+        Item(ScoreSetter(ability=ABILITY.STR, score=1)),
+        Item(ScoreChanger(ability=ABILITY.INT, score=90))
+    ])
+
     from pprint import pprint
 
     pprint(ch.abilities)
-    c.calculate_ability_scores()
+    AbilityOverseer.calculate_ability_scores(ch)
     pprint(ch.abilities)
+    print(Cthulhu.overseers)
     # while True:
     #     user = get_input(expected=CMDS, errmsg='Unavailable command', prompt=CMDS)
     #     if user == 'exit':
