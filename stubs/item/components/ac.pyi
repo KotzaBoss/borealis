@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from item.components import Component
+from components import Component
 
 
 class AC(Component):
@@ -14,7 +14,7 @@ class AC(Component):
 
     def get(self, key: Any, default: Optional[Any] = ...): ...
 
-    def update(self, char_sheet: dict) -> Any: ...
+    def update(self, char_sheet: Character) -> Any: ...
 
     def update_ac(self) -> None: ...
 

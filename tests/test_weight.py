@@ -1,6 +1,6 @@
 import pytest
 
-from item.components.weight import Pound, Kilogram, Weight
+from components.weight import Pound, Kilogram, Weight
 
 values = [
     (1, 5),

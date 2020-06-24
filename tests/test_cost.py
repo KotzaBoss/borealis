@@ -1,6 +1,6 @@
 import pytest
 
-from item.components.cost import Cost, COIN
+from components.cost import Cost, COIN
 
 
 @pytest.mark.parametrize(

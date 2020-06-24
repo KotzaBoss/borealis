@@ -1,6 +1,6 @@
 import pytest
 
-from item.components.healing import Healing
+from components.healing import Healing
 
 
 @pytest.mark.parametrize(

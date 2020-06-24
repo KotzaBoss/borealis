@@ -1,6 +1,6 @@
 from typing import Any, Union
 
-from item.components import Boolean, Component
+from components import Boolean, Component
 from utils.enums import ABILITY, CONDITION, SKILL
 
 
@@ -10,7 +10,7 @@ class _Advantage_Type(Boolean):
 class _Advantage_Component(Component):
     def __init__(self, *advantages: _Advantage_Type) -> None: ...
 
-    def update(self, char_sheet: dict) -> Any: ...
+    def update(self, char_sheet: Character) -> Any: ...
 
 class Advantage(_Advantage_Component):
     def __init__(self, *advantages: _Advantage_Type) -> None: ...

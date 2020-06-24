@@ -1,6 +1,6 @@
 from typing import Any
 
-from item.components import Component
+from components import Component
 
 
 class Healing(Component):
@@ -8,6 +8,8 @@ class Healing(Component):
 
     @property
     def heal_points(self): ...
+
     @heal_points.setter
     def heal_points(self, heal_points: Any) -> None: ...
-    def update(self, char_sheet: dict) -> Any: ...
+
+    def update(self, char_sheet: Character) -> Any: ...

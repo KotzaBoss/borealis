@@ -1,6 +1,6 @@
 from typing import Any
 
-from item.components import Component
+from components import Component
 from utils.enums import ABILITY
 
 
@@ -9,6 +9,8 @@ class Proficiency(Component):
 
     @property
     def ability(self): ...
+
     @ability.setter
     def ability(self, ability: Any) -> None: ...
-    def update(self, char_sheet: dict) -> Any: ...
+
+    def update(self, char_sheet: Character) -> Any: ...

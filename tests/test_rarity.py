@@ -1,6 +1,6 @@
 import pytest
 
-from item.components.rarity import Rarity
+from components.rarity import Rarity
 
 
 @pytest.mark.parametrize(

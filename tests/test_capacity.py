@@ -1,7 +1,7 @@
 import pytest
 
-from item.components.capacity import Capacity, CubicFeet, CubicMeter
-from item.components.weight import Kilogram
+from components.capacity import Capacity, CubicFeet, CubicMeter
+from components.weight import Kilogram
 
 values = [
     (1, 5),

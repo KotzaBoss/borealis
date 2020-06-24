@@ -1,6 +1,6 @@
 from typing import Any
 
-from item.components import Component
+from components import Component
 from utils.enums import ABILITY as ABILITY
 
 
@@ -19,7 +19,7 @@ class ScoreManipulator(Component):
     @ability.setter
     def ability(self, ability: ABILITY) -> Any: ...
 
-    def update(self, char_sheet: dict) -> Any: ...
+    def update(self, char_sheet: Character) -> Any: ...
 
 
 class ScoreSetter(ScoreManipulator):

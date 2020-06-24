@@ -1,6 +1,6 @@
 import pytest
 
-from item.components.text import Text
+from components.text import Text
 
 
 @pytest.mark.parametrize(

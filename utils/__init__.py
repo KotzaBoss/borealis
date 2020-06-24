@@ -1,8 +1,7 @@
+from __future__ import annotations
+
 from functools import wraps
 from typing import Set, Any, Callable, Optional, Union, List
-
-from utils.enums import Enum
-from item.components import Component
 
 
 def validate_kwargs(keys: Union[Set[Any], Enum] = None, value_types: Set[type] = None):

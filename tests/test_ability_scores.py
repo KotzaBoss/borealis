@@ -1,6 +1,7 @@
-from character import Character, AbilityOverseer
+from character import Character
+from components.score_manipulator import ScoreSetter, ScoreChanger, ScoreMaxSetter
 from item import Item
-from item.components.score_manipulator import ScoreSetter, ScoreChanger, ScoreMaxSetter
+from overseer import AbilityOverseer
 from utils.enums import ABILITY
 
 

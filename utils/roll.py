@@ -1,15 +1,17 @@
 import re
 from random import randint, seed
 
+from borealis import DEBUG
+
 from utils.enums import ABILITY
 
 
-def roll(expr: str, seed_=None):
+def roll(expr: str):
     """ `expr` is expected to be:
         xdy with no spaces, x/y must be numbers other than 0 and d is the character 'd'
     """
-    if seed_:
-        seed(seed_)
+    if DEBUG:
+        seed(666)
     if match := re.match(r'(\d+)d(\d+)', expr):
         return sum(
             [randint(1, int(match.group(2))) for _ in range(int(match.group(1)))]

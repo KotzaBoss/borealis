@@ -1,6 +1,6 @@
 import pytest
 
-from item.components.charges import Charges
+from components.charges import Charges
 
 
 @pytest.mark.parametrize(

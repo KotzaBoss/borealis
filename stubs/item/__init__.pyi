@@ -1,6 +1,6 @@
 from typing import Any, List, Set, Union
 
-from item.components import Component
+from components import Component
 
 
 class Item:

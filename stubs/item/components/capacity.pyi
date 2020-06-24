@@ -1,6 +1,6 @@
 from typing import Any, Union
 
-from item.components import Component
+from components import Component
 
 
 class Volume(int):
@@ -30,6 +30,8 @@ class Capacity(Component):
 
     @property
     def capacity(self): ...
+
     @capacity.setter
     def capacity(self, capacity: Any) -> None: ...
-    def update(self, char_sheet: dict) -> Any: ...
+
+    def update(self, char_sheet: Character) -> Any: ...

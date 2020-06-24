@@ -1,7 +1,7 @@
 from typing import Any
 
+from components import Boolean, Component
 from item import Item as Item
-from item.components import Boolean, Component
 
 
 class Container(Component, Boolean):
@@ -14,4 +14,4 @@ class Container(Component, Boolean):
 
     def add(self, *new_items: Item) -> Any: ...
 
-    def update(self, char_sheet: dict) -> Any: ...
+    def update(self, char_sheet: Character) -> Any: ...

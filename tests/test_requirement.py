@@ -1,6 +1,6 @@
 import pytest
 
-from item.components.requirement import AbilityRequirement, Attunement, ABILITY
+from components.requirement import AbilityRequirement, Attunement, ABILITY
 
 
 @pytest.mark.parametrize(

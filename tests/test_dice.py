@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from item.components.dice import DamageDice
+from components.dice import DamageDice
 
 
 @pytest.mark.parametrize(

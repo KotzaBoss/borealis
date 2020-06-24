@@ -1,6 +1,6 @@
 import pytest
 
-from item.components.proficiency import Proficiency
+from components.proficiency import Proficiency
 
 
 @pytest.mark.parametrize(

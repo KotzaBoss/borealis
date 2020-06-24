@@ -1,6 +1,6 @@
 from typing import Any
 
-from item.components import Component
+from components import Component
 
 
 class Duration(Component):
@@ -8,9 +8,11 @@ class Duration(Component):
 
     @property
     def duration(self): ...
+
     @duration.setter
     def duration(self, value: Any) -> None: ...
-    def update(self, char_sheet: dict) -> Any: ...
+
+    def update(self, char_sheet: Character) -> Any: ...
 
 class Don(Duration):
     def __init__(self, duration: int = ...) -> None: ...

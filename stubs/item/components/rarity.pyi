@@ -1,6 +1,6 @@
 from typing import Any
 
-from item.components import Component
+from components import Component
 from utils.enums import RARITY
 
 
@@ -9,6 +9,8 @@ class Rarity(Component):
 
     @property
     def rarity(self): ...
+
     @rarity.setter
     def rarity(self, rarity: Any) -> None: ...
-    def update(self, char_sheet: dict) -> Any: ...
+
+    def update(self, char_sheet: Character) -> Any: ...

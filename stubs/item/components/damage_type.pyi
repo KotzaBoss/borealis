@@ -1,6 +1,6 @@
 from typing import Any, Set
 
-from item.components import Component
+from components import Component
 from utils.enums import DAMAGETYPE as DAMAGETYPE
 
 
@@ -9,9 +9,11 @@ class DamageType(Component):
 
     @property
     def types(self): ...
+
     @types.setter
     def types(self, dmg_types: Set[DAMAGETYPE]) -> Any: ...
-    def update(self, char_sheet: dict) -> Any: ...
+
+    def update(self, char_sheet: Character) -> Any: ...
 
 class Resistance(DamageType):
     def __init__(self, *dmg_types: Any) -> None: ...

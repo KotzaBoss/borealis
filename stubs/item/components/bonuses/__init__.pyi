@@ -1,15 +1,18 @@
 from typing import Any, Optional
 
-from item.components import Component
+from components import Component
 
 
 class Bonus(Component):
     def __init__(self, bonus: int = ...) -> None: ...
+
     @property
     def bonus(self): ...
+
     @bonus.setter
     def bonus(self, bonus: Any) -> None: ...
-    def update(self, char_sheet: dict) -> Any: ...
+
+    def update(self, char_sheet: Character) -> Any: ...
 
 class ACBonus(Bonus):
     def __init__(self, bonus: int = ...) -> None: ...
