@@ -2,17 +2,18 @@ from __future__ import annotations
 
 from typing import Union
 
+from character import Ability
 from components import Component, Boolean
 from components.proficiency import Proficiency
 from utils.enums import ABILITY
 
 
-class Requirement(Component, Boolean):
+class Requirement(Component):
     """ Base class for requirements/prerequisites. """
 
-    def __init__(self, requirement: Union[int, bool, ABILITY, Proficiency], **kwargs):
-        super().__init__(**kwargs)  # forward keyword arguments (used by Bollean class)
+    def __init__(self, requirement: Union[int, bool, ABILITY, Proficiency]):
         self._requirement = requirement
+        super().__init__()
 
     @property
     def requirement(self):
@@ -27,7 +28,11 @@ class Requirement(Component, Boolean):
 
 
 class AbilityRequirement(Requirement):
+    """ TODO: What arguments for __init__"""
+
     def __init__(self, *abilities: Ability):
+        if not all(isinstance(ability, Ability) for ability in abilities):
+            raise TypeError
         super().__init__(abilities)
 
     def update(self, char: Character):
@@ -56,9 +61,12 @@ class ProficiencyRequirement(Requirement):
     #     return s
 
 
-class Attunement(Requirement):
+class Attunement(Requirement, Boolean):
     def __init__(self, attunement: bool = False):
-        super().__init__(requirement=attunement, bvalue=attunement)
+        super().__init__(requirement=attunement)
+
+    def __bool__(self):
+        return bool(self.requirement)
 
     def update(self, char: Character):
         pass

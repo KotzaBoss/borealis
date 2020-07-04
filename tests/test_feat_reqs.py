@@ -17,32 +17,33 @@ from utils.enums import ABILITY, ARMORTYPE
     ]
 )
 def test_feat_reqs(requirement, passed):
-    f = Feat(*requirement)
-    c = Character(feats=[f], proficiencies=[Proficiency(ARMORTYPE.HEAVY),
-                                            Proficiency(ARMORTYPE.LIGHT)])  # TODO: make proficiency get multiple profs?
-    for comp in f.components:
+    feat = Feat(*requirement)
+    char = Character(feats=[feat],
+                     proficiencies=[Proficiency(ARMORTYPE.HEAVY),  # Unspecified init rolls means standard table for scores
+                                    Proficiency(ARMORTYPE.LIGHT)])  # TODO: make proficiency get multiple profs?
+    for comp in feat.components:
         if isinstance(comp, AbilityRequirement):
             for ability in comp.requirement:
-                if c.abilities[ability.name] >= ability.score:
-                    assert passed is True
+                if char.abilities[ability.name] >= ability.score:
                     print(
-                        f"\nfrom components {f.components} ~ abilities {[f'{abil[0]}-{abil[1].score}' for abil in c.abilities.items()]}\n"
-                        f"{c.abilities[ability.name]} is >= {ability.score}")
+                        f"\nfrom components {feat.components} ~ abilities {[f'{abil[0]}-{abil[1].score}' for abil in char.abilities.items()]}\n"
+                        f"{char.abilities[ability.name]} is >= {ability.score}")
+                    assert passed is True
                     return
             else:
                 print(
-                    f"\nfrom components {f.components} ~ abilities {[f'{abil[0]}-{abil[1].score}' for abil in c.abilities.items()]}\n"
+                    f"\nfrom components {feat.components} ~ abilities {[f'{abil[0]}-{abil[1].score}' for abil in char.abilities.items()]}\n"
                     f"no ability is >= {ability.score}")
                 assert passed is False
                 return
         else:
             for prof in comp.requirement:
-                if prof in c.proficiencies:
-                    print(f"\n{prof} in {c.proficiencies}")
+                if prof in char.proficiencies:
+                    print(f"\n{prof} in {char.proficiencies}")
                     assert passed is True
                     return
             else:
-                print(f"\n{prof} not in {c.proficiencies}")
+                print(f"\n{prof} not in {char.proficiencies}")
                 assert passed is False
                 return
 

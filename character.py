@@ -9,7 +9,8 @@ from utils.roll import roll_standard_table
 
 
 class Character(object):
-    def __init__(self, *,
+    def __init__(self,
+                 *,
                  init_rolls=None,
                  items: List[ComponentCollection] = None,
                  feats: List[ComponentCollection] = None,

@@ -1,5 +1,3 @@
-import pytest
-
 from components.activated import Activated
 from components.consumable import Consumable
 from components.cursed import Cursed
@@ -12,12 +10,5 @@ boolleans = [Cursed, Activated, Consumable, EffectOnCommand,
              IsShield, Rechargeable, Silvered]
 
 
-@pytest.mark.parametrize(
-    'component, init, expected1, change, expected2',
-    [(component, True, True, False, False) for component in boolleans]
-)
-def test_booleans(component, init, expected1, change, expected2):
-    c = component(init)
-    assert bool(c) is expected1
-    c.bvalue = change
-    assert bool(c) is expected2
+def test_booleans():
+    raise NotImplemented

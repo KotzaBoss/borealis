@@ -4,8 +4,11 @@ from components import Component, Boolean
 
 
 class IsShield(Component, Boolean):
-    def __init__(self, bvalue: bool = False):
-        super().__init__(bvalue=bvalue)
+    def __init__(self):
+        super().__init__()
+
+    def __bool__(self):
+        return True
 
     def update(self, char: Character):
         pass

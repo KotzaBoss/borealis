@@ -6,7 +6,6 @@ class BaseEnum(Enum):
         return self.name
 
 
-# TODO [CONFIRM DONE]: fid all BaseEnum.NONE and fix code
 class WEAPONTYPE(BaseEnum):
     pass
 
@@ -97,6 +96,25 @@ class ABILITY(BaseEnum):
     INT = 'INT'
     CHA = 'CHA'
 
+class SAVINGTHROW(BaseEnum):
+    """ Code duplication because enum attributes are bound to their class.
+
+    >>> class base(Enum):
+    ...     pass
+    >>> class ability(base):
+    ...     STR = 'STR'
+    >>> class saving(ability, Enum):  # only legal subclass
+    ...     pass
+    >>> type(saving.STR)
+    <enum 'ability'>
+
+    """
+    STR = 'STR'
+    DEX = 'DEX'
+    CON = 'CON'
+    WIS = 'WIS'
+    INT = 'INT'
+    CHA = 'CHA'
 
 class ARMORTYPE(BaseEnum):
     HEAVY = 'H'

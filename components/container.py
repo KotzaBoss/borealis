@@ -8,11 +8,14 @@ class Container(Component, Boolean):
     """ TODO: Figure out what/how to save items. What will the program look for? """
 
     def __init__(self, *stuff: Item):
-        super().__init__(bvalue=bool(stuff))
         self._container = {item.name: item for item in stuff}
+        super().__init__()
 
     def __getitem__(self, item):
         return self._container[item]
+
+    def __bool__(self):
+        return bool(self._container)
 
     @property
     def container(self):

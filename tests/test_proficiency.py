@@ -1,15 +1,23 @@
 import pytest
 
+from character import Ability
 from components.proficiency import Proficiency
+from utils.enums import ARMORTYPE, ABILITY, SAVINGTHROW
 
 
 @pytest.mark.parametrize(
-    'ability', [
+    'resource', [
         123,
         'ability1',
-        None
+        None,
+        Ability(name=ABILITY.WIS),
+        ARMORTYPE.MEDIUM,
+        SAVINGTHROW.STR,
     ]
 )
-def test_prof(ability):
-    with pytest.raises(TypeError):
-        p = Proficiency(ability)
+def test_prof(resource):
+    if not isinstance(resource, ARMORTYPE) and not isinstance(resource, SAVINGTHROW):
+        with pytest.raises(TypeError):
+            p = Proficiency(resource)
+    else:
+        p = Proficiency(resource)

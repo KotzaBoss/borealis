@@ -30,7 +30,7 @@ class AbilityOverseer(Overseer):
         score_changers: Dict[ABILITY, List[ScoreManipulator]] = {ab: [] for ab in ABILITY}
         for ability in char.abilities:
             for item in char.items:
-                for component in item.components.values():
+                for component in item.components:
                     if isinstance(component, Setter) and component.resource.name == ability:
                         score_setters[ability].append(component)
                     elif isinstance(component, MaxSetter) and component.resource.name == ability:

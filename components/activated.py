@@ -4,8 +4,13 @@ from components import Component, Boolean
 
 
 class Activated(Component, Boolean):
-    def __init__(self, bvalue: bool = False):
-        super().__init__(bvalue=bvalue)
+    """ Question: Does that mean tooglable? """
+
+    def __init__(self):
+        super().__init__()
 
     def update(self, char: Character):
         pass
+
+    def __bool__(self):
+        return True

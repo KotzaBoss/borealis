@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 from components import Component
+from . import Resource
 
 
 class Proficiency(Component):
-    def __init__(self, resource):
+    def __init__(self, resource: Resource):
+        if not isinstance(resource, Resource):
+            raise TypeError
         self._resource = resource
 
     def __eq__(self, other):

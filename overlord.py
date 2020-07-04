@@ -49,6 +49,14 @@ class Azathoth(Overlord):
             return Hypnos.awaken()
 
 
+class Ares(Overlord):
+    """ Man-o-war. """
+
+    @classmethod
+    def awaken(cls, *args, **kwargs):
+        """ Gather troops and perform combar/action? """
+
+
 class Mnemosyne(Overlord):
     """ She always remembers. """
 
