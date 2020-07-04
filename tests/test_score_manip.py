@@ -1,6 +1,6 @@
 import pytest
 
-from character import Character, Ability, ABILITY
+from character import Character, ABILITY
 from components.score_manipulator import Setter, MaxSetter, Changer
 from item import Item
 from overseer import AbilityOverseer
@@ -8,9 +8,12 @@ from overseer import AbilityOverseer
 
 @pytest.mark.parametrize(
     'manipulator, score', [
-        (Changer(score=10, resource=Ability(name=ABILITY.STR)), 25),
-        (Setter(score=10, resource=Ability(name=ABILITY.STR)), 10),
-        (MaxSetter(score=10, resource=Ability(name=ABILITY.STR)), 10)
+        # (Changer(score=10, resource=Ability(name=ABILITY.STR)), 25),
+        # (Setter(score=10, resource=Ability(name=ABILITY.STR)), 10),
+        # (MaxSetter(score=10, resource=Ability(name=ABILITY.STR)), 10)
+        (Changer(score=10, resource=ABILITY.STR), 25),
+        (Setter(score=10, resource=ABILITY.STR), 10),
+        (MaxSetter(score=10, resource=ABILITY.STR), 10)
     ]
 )
 def test_score_manip(manipulator, score):

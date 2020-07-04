@@ -31,11 +31,11 @@ class AbilityOverseer(Overseer):
         for ability in char.abilities:
             for item in char.items:
                 for component in item.components:
-                    if isinstance(component, Setter) and component.resource.name == ability:
+                    if isinstance(component, Setter) and component.resource is ability:
                         score_setters[ability].append(component)
-                    elif isinstance(component, MaxSetter) and component.resource.name == ability:
+                    elif isinstance(component, MaxSetter) and component.resource is ability:
                         max_setters[ability].append(component)
-                    elif isinstance(component, Changer) and component.resource.name == ability:
+                    elif isinstance(component, Changer) and component.resource is ability:
                         score_changers[ability].append(component)
         return score_setters, max_setters, score_changers
 

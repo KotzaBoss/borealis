@@ -13,7 +13,9 @@ leveling them up, engaging in combat and so on.
 While Aurora is the "sit-down-relax" companion, Borealis will be the "in-the-trenches" ally.
 
 # TODO
++ [ ] Review code todos
 + [ ] Compile Feats and Features extract generics
+- [ ] Draft program loop
 - [ ] Save/Import interface
-- [ ] Implement history 
+- [ ] Implement history
 - [ ] Import Classes when typing.TYPE_CHECKING

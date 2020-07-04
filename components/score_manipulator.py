@@ -8,6 +8,11 @@ class ScoreManipulator(Component):
     `resource` may be an ability, that should be manipulated by the `score`
 
     Who should provide the logic behind the manipulation? The overseer?
+
+    The resource could be just a class type allowing checks to be with the is operator
+    for better readability and less memory use since we wont be instantiating anything as a resource
+
+    Check tests for use.
     """
 
     def __init__(self, score: int = 0, resource=None):

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from components import Component
-from . import Resource
+from utils.resources import Resource
 
 
 class Proficiency(Component):

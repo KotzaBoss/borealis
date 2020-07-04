@@ -15,5 +15,6 @@ add the following after the `__future__` import
 >>> # rest of code
 
 """
+# START: Look up feats and features and find generic similarities
 
 DEBUG = True

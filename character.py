@@ -5,6 +5,7 @@ from typing import List, Dict, Union
 
 from components.proficiency import Proficiency
 from utils.enums import ABILITY
+from utils.resources import Initiative
 from utils.roll import roll_standard_table
 
 
@@ -20,7 +21,7 @@ class Character(object):
         self._inspiration = 0
         self._proficiency = 0
         self._ac = 0
-        self._initiative = 0
+        self._initiative: Initiative = 0
         self._speed = 0
         self._hp = {}
         self._hit_dice = 0
@@ -106,6 +107,14 @@ class Character(object):
     @hit_dice.setter
     def hit_dice(self, val):
         self._hit_dice = val
+
+    @property
+    def feats(self):
+        return self._feats
+
+    @feats.setter
+    def feats(self, val):
+        self._feats = val
 
     @property
     def features(self):
