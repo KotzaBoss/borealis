@@ -43,22 +43,15 @@ class ComponentCollection(ABC):
         self._components = components
 
     def __repr__(self):
-        return f"\n{self._name}\n" + \
-               ''.join(
-                   [f"{comp.__class__.__name__.ljust(25, '.')} : {comp}\n" for comp in self._components]
-               )
+        s = f"{self.__class__.__name__}("
+        for k, v in self.__dict__.items():
+            s += f"{k}={v}, "
+        s += "\b\b)"
+        return s
 
 
 class Boolean(ABC):
-    """ Class to be inherited when `__bool__()` is required.
-
-        For multiple inheritance other superclasses should
-        forward `bvalue` as a keyword argument so that it
-        is used to initialise this class.
-
-        Subclasses should remember to update `self.bvalue = bool(...)`
-        if their encapsulated data is changed.
-    """
+    """ Abstract class to ensure derived class has the `__bool__` method. """
 
     @abstractmethod
     def __bool__(self):

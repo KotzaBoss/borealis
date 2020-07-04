@@ -1,13 +1,16 @@
 from __future__ import annotations
 
-from functools import total_ordering
-from typing import List, Dict, Union
+from typing import List, Dict, Tuple
 
+from ability import Ability
 from components.proficiency import Proficiency
+from components.requirement import AbilityRequirement
 from utils.enums import ABILITY
 from utils.resources import Initiative
 from utils.roll import roll_standard_table
 
+
+# from feats import Feat
 
 class Character(object):
     def __init__(self,
@@ -26,7 +29,6 @@ class Character(object):
         self._hp = {}
         self._hit_dice = 0
         self._features = {}
-        self._feats = feats
         self._proficiencies = proficiencies
         self._spells = {}  # spell sheets?
         if not init_rolls:
@@ -35,6 +37,9 @@ class Character(object):
             {ability: Ability(name=ability, base=init_rolls[i]) for i, ability in enumerate(ABILITY)}
         self._skills = {}
         self._items = items if items else []
+        self._feats, err = self.check_feat_req(feats)[0]
+        if err:
+            print(f"prerequisites not met for {err}")
 
     def __eq__(self, other):
         return all([self._name == other._name, self._abilities == other._abilities, self._items == other._items])
@@ -43,6 +48,18 @@ class Character(object):
         """ Check if item in attribute depending on type. """
         if isinstance(item, Prociciency):
             return item.resource in self._proficiencies
+
+    def check_feat_req(self, feats) -> Tuple[List[Feat], List[Feat]]:
+        """ Check feats to ensure requirements are met. Separate passed from failed feats. """
+        err = []
+        for i, feat in enumerate(feats):
+            if feat.prerequisite and isinstance(feat.prerequisite, AbilityRequirement):
+                for ability in feat.prerequisite.requirement:
+                    if self._abilities[ability.name].score > ability.score:
+                        break
+                else:
+                    err.append(feat)
+        return [feat for feat in feats if feat not in err], err
 
     @property
     def name(self):
@@ -167,34 +184,3 @@ class Character(object):
     def __repr__(self):
         return str(self.__dict__.items())
         # return f"{self._name}\n{self._abilities}\n{self._items}"
-
-
-@total_ordering
-class Ability(object):
-    def __init__(self, *, name: ABILITY = None, base=0):
-        self.max = 20
-        self.score = base
-        self.user_override = None
-        self.base = base
-        self.name = name
-
-    def __eq__(self, other: Union[Ability, int]):
-        if isinstance(other, Ability):
-            return self.score == other.score
-        else:
-            return self.score == other
-        # return all([self.base == other.base, self.max == other.max, self.user_override == other.user_override,
-        #             self.score == other.score, self.name == other.name])
-
-    def __lt__(self, other: Union[Ability, int]):
-        if isinstance(other, Ability):
-            return self.score < other.score
-        else:
-            return self.score < other
-
-    def __repr__(self):
-        s = f"{self.__class__.__name__}("
-        for k, v in self.__dict__.items():
-            s += f"{k}={v}, "
-        s += "\b\b)"
-        return s

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Union
 
-from character import Ability
+from ability import Ability
 from components import Component, Boolean
 from components.proficiency import Proficiency
 from utils.enums import ABILITY

@@ -1,6 +1,7 @@
 import pytest
 
-from character import Character, Ability
+from ability import Ability
+from character import Character
 from components.proficiency import Proficiency
 from components.requirement import AbilityRequirement, ProficiencyRequirement
 from feats import Feat

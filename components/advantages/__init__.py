@@ -8,13 +8,14 @@ __all__ = ['Advantage', 'Disadvantage', 'OnAbilityCheck', 'OnAbilitySavingThrow'
 
 from typing import Union
 
-from components import Component, Boolean
+from components import Component
 from utils.enums import ABILITY, CONDITION, SKILL
+from utils.resources import Resource
 
 
-class _Advantage_Type(Boolean):
+class _Advantage_Type(object):
     def __init__(self, on: Union[ABILITY, CONDITION, SKILL, bool] = None, **kwargs):
-        super().__init__(bvalue=bool(on))  # Enums give bool == True
+        super().__init__()
         self._on = on
 
     def __repr__(self):
@@ -26,8 +27,6 @@ class _Advantage_Component(Component):
         self._advantage = {adv.__class__.__name__: adv for adv in advantages}  # type: ignore
 
     def update(self, char: Character):
-        # if 'advantage_type' in char_sheet:
-        #      self._advantage['advantage_type'] = char_sheet['advantage_type']
         pass
 
 
@@ -77,3 +76,21 @@ class OnAttack(_Advantage_Type):
 class OnDeathSavingThrow(_Advantage_Type):
     def __init__(self, bvalue: bool = False):
         super().__init__(on=bvalue, bvalue=bvalue)
+
+
+class Adv(Component):
+    def __init__(self, resource: Resource = None):
+        if not isinstance(resource, Resource):
+            raise TypeError
+        self._resource = resource
+
+    @property
+    def resource(self):
+        return self._resource
+
+    @resource.setter
+    def resource(self, resource):
+        self._resource = resource
+
+    def update(self, char: Character):
+        pass

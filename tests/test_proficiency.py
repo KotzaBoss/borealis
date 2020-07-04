@@ -1,6 +1,6 @@
 import pytest
 
-from character import Ability
+from ability import Ability
 from components.proficiency import Proficiency
 from utils.enums import ARMORTYPE, ABILITY, SAVINGTHROW
 

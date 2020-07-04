@@ -25,7 +25,7 @@ def get_input(*, expected=None, errmsg='', prompt=None):
 if __name__ == '__main__':
     from components.score_manipulator import Setter
     from character import Character
-    from character import Ability
+    from ability import Ability
     from utils.enums import ABILITY
     from item import Item
     from overseer import AbilityOverseer

@@ -96,6 +96,7 @@ class ABILITY(BaseEnum):
     INT = 'INT'
     CHA = 'CHA'
 
+
 class SAVINGTHROW(BaseEnum):
     """ Code duplication because enum attributes are bound to their class.
 
