@@ -3,7 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# deosnt really comply
 .idea
+
+stubs
 
 # C extensions
 *.so

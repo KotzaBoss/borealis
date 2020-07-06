@@ -54,7 +54,7 @@ class Ares(Overlord):
 
     @classmethod
     def awaken(cls, *args, **kwargs):
-        """ Gather troops and perform combar/action? """
+        """ Gather troops and perform combat/action? """
 
 
 class Mnemosyne(Overlord):
