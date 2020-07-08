@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class BaseEnum(Enum):
-    def __str__(self):
-        return self.name
+    def __repr__(self):
+        return f"{self.__class__.__name__}.{self.name}"
 
 
 class WEAPONTYPE(BaseEnum):
@@ -121,8 +121,7 @@ class ARMORTYPE(BaseEnum):
     HEAVY = 'H'
     MEDIUM = 'M'
     LIGHT = 'L'
-    NONE = 'N'
-
+    SHIELD = 'S'
 
 class WEAPONPROPERTY(BaseEnum):
     AMMUNITION = 'AMMUNITION'

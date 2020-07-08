@@ -1,48 +1,52 @@
 from __future__ import annotations
 
+from pprint import pformat
 from typing import List, Dict, Tuple
 
 from ability import Ability
+from components.ac import AC
 from components.proficiency import Proficiency
 from components.requirement import AbilityRequirement
-from utils.enums import ABILITY
-from utils.resources import Initiative
-from utils.roll import roll_standard_table
+from components.score import Score
+from utils.enums import ABILITY, SKILL
+from utils.resources import Initiative, Speed, ProficiencyBonus, Inspiration
+from utils.roll import roll_standard_table, DiceRoll
 
-
-# from feats import Feat
 
 class Character(object):
+
     def __init__(self,
                  *,
-                 init_rolls=None,
+                 init_rolls: List[int, int, int, int, int, int] = None,
                  items: List[ComponentCollection] = None,
                  feats: List[ComponentCollection] = None,
                  proficiencies: List[Proficiency] = None,
                  name: str = '-=>NONAME<=-'):
-        self._name = name
-        self._inspiration = 0
-        self._proficiency = 0
-        self._ac = 0
-        self._initiative: Initiative = 0
-        self._speed = 0
-        self._hp = {}
-        self._hit_dice = 0
-        self._features = {}
-        self._proficiencies = proficiencies
-        self._spells = {}  # spell sheets?
+
+        self._name: str = name
+        self._inspiration = Inspiration()
+        self._proficiency_bonus: ProficiencyBonus = ProficiencyBonus()
+        self._ac: AC = AC()
+        self._initiative: Initiative = Initiative()
+        self._speed: Speed = Speed()
+        self._hp = {'max': Score(), 'temp': Score(), 'curr': Score()}
+        self._hit_dice = DiceRoll()
+        self._features = []
+        self._proficiencies = proficiencies if proficiencies else []
+        self._spells = []  # spell sheets?
         if not init_rolls:
             init_rolls = roll_standard_table()
         self._abilities: Dict[ABILITY, Ability] = \
             {ability: Ability(name=ability, base=init_rolls[i]) for i, ability in enumerate(ABILITY)}
-        self._skills = {}
+        self._skills = {skill: Score() for skill in SKILL}
+        self._saving_throws = {ability: Score() for ability in ABILITY}
         self._items = items if items else []
-        self._feats, err = self.check_feat_req(feats)[0]
+        self._feats, err = self.check_feat_req(feats) if feats else ([], [])
         if err:
             print(f"prerequisites not met for {err}")
 
-    def __eq__(self, other):
-        return all([self._name == other._name, self._abilities == other._abilities, self._items == other._items])
+    # def __eq__(self, other):
+    #     return all([self._name == other._name, self._abilities == other._abilities, self._items == other._items])
 
     def __contains__(self, item: Proficiency):
         """ Check if item in attribute depending on type. """
@@ -79,11 +83,11 @@ class Character(object):
 
     @property
     def proficiency(self):
-        return self._proficiency
+        return self._proficiency_bonus
 
     @proficiency.setter
     def proficiency(self, val):
-        self._proficiency = val
+        self._proficiency_bonus = val
 
     @property
     def ac(self):
@@ -182,5 +186,4 @@ class Character(object):
         self._items = val
 
     def __repr__(self):
-        return str(self.__dict__.items())
-        # return f"{self._name}\n{self._abilities}\n{self._items}"
+        return pformat(self.__dict__)

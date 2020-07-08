@@ -21,18 +21,16 @@ While Aurora is the "sit-down-relax" companion, Borealis will be the "in-the-tre
 
 # Program Flow
 
-Choose type of diagram for prototyping
-
-### Mermaid Flowchart
+### Flowchart
 
  ```mermaid
 graph LR;
-	classDef UI color:white,stroke-width:10px
+	classDef UI color:aqua,stroke-width:8px
 	classDef Overlord color:red
 	classDef Overseer color:grey
 	
 	UI((UI)):::UI
-	Azathoth{Azathoth}:::Overlord
+	Azathoth{{Azathoth}}:::Overlord
 	Ares{{Ares}}:::Overlord
 	Mnemosyne{{Mnemosyne}}:::Overlord
 	Hypnos{{Hypnos}}:::Overlord
@@ -40,7 +38,9 @@ graph LR;
 	Amun{{Amun}}:::Overlord
 	Cthulhu{{Cthulhu}}:::Overlord
 	Daloth{{Daloth}}:::Overlord
+	SpellOverlord{{SpellOverlord}}:::Overlord
 	UI((UI)):::UI
+	extCond{Hypnos?}
 	EXIT>Exit]
 	
 	%% Chaos
@@ -51,72 +51,56 @@ graph LR;
 	Azathoth --> |Dice Rolls| Fortuna --> Daloth
 	Azathoth --> |Character Creation| Amun --> Daloth
 	Azathoth --> |Character Edits| Cthulhu --> Daloth
-	Daloth --> ext{Hypnos?}
-	ext -->|YES| EXIT
-	ext -->|NO| UI
+	Azathoth --> |Use spells| SpellOverlord -->Daloth
+	Daloth --> extCond
+	extCond -->|YES| EXIT
+	extCond -->|NO - Return output| UI
  ```
 
+
+
 ```mermaid
-graph TD;
-	classDef UI color:white,stroke-width:10px
+graph LR;
+	classDef UI color:aqua,stroke-width:10px
 	classDef Overlord color:red
 	classDef Overseer color:grey
-Cthulhu{{Cthulhu}}:::Overlord
-AbilityOverseer(AbilityOverseer):::Overseer
-Overseer2(Overseer2):::Overseer
-Overseer3(Overseer3):::Overseer
-%% How is Cthulhu properly graphed?
-%% He is constanlty passing the character sheet around?
-%% Or should the overseers communicate?
-%% SOLID would suggest segregation of work but that makes an ugly diagram
-Cthulhu --> AbilityOverseer -.-> Cthulhu
-Cthulhu --> Overseer2 -.-> Cthulhu
-Cthulhu --> Overseer3 -.-> Cthulhu
+	
+	UI((UI)):::UI
+	Azathoth{{Azathoth}}:::Overlord
+	Cthulhu{{Cthulhu}}:::Overlord
+	Daloth{{Daloth}}:::Overlord
+	AbilityOverseer(AbilityOverseer):::Overseer
+	Overseer2(Overseer2):::Overseer
+	Char((Charsheet))
+	
+	UI --> |Edit requested| Azathoth
+	Azathoth --> Cthulhu
+	Cthulhu --- AbilityOverseer
+	Cthulhu --- Overseer2
+	AbilityOverseer -.- Char 
+	Overseer2 -.- Char 
+	Cthulhu --> |Return edited char sheet| Daloth
+	Daloth --> UI
 ```
-
-### Mermaid State Diagram
-
 ```mermaid
-stateDiagram	
-UI
-note left of UI
-	User CAN ONLY interface with UI
-end note
-Azathot: Input Controller
-Daloth: Output Controller
-Amun: Create
-Hypnos: Exit
-Cthul: Edit
-state Cthulhu_Overseers {
-	[*] --> AbilityOverseer
-	AbilityOverseer --> Overseer2
-	Overseer2 --> Overseer3
-	Overseer3 --> [*]
-}
-Mnemosyne: Import
-Fortuna: Roll Dice
-Ares: Combat
-
-[*] --> UI
-UI --> Azathot
-Azathot --> Amun
-Azathot --> Cthul
-Azathot --> Hypnos
-Azathot --> Mnemosyne
-Azathot --> Fortuna
-Azathot --> Ares
-
-Cthul --> Cthulhu_Overseers
-Cthulhu_Overseers --> Daloth
-Amun --> Daloth
-Fortuna --> Daloth
-Ares --> Daloth
-Mnemosyne --> Daloth
-Hypnos --> Daloth
-
-Daloth --> [*]: Hypnos Awakened
-Daloth --> UI
+graph LR;
+	%% Spells
+	classDef UI color:aqua,stroke-width:8px
+	classDef Overlord color:red
+	classDef CharSheet stroke-width:8px
+    UI((UI)):::UI
+    Char((Character Sheet)):::Charsheet
+    SpellOverlord{{SpellOverlord}}:::Overlord
+    Daloth{{Daloth}}:::Overlord
+    Azathoth{{Azathoth}}:::Overlord
+    Spells[Spell Bank]
+    
+    UI ==> |Request use of spell X| Azathoth
+    Azathoth --> SpellOverlord
+    SpellOverlord --> |Check Spell System used| Char
+    SpellOverlord --> |Grab spell| Spells 
+    SpellOverlord --> |Use spell| Daloth
+    Char --> Spells
+    Daloth --> UI
 ```
-
-
 

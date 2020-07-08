@@ -6,6 +6,34 @@ from borealis import DEBUG  # TODO: Ensure this works
 from utils.enums import ABILITY
 
 
+class DiceRoll(object):
+    """ Mostly documentation dice roll class.
+        Expected dice roll expression should be xdy or `\\d+d\\d+`.
+        eg: 10d10, 2d10, 1d1
+        not 10 d20, 1d 20 or anything else
+    """
+
+    def __init__(self, expr: str = '0d0'):
+        if not (match := re.match(r'(?P<x>\d+)d(?P<y>\d+)', expr)):
+            raise ValueError("Dice expression expected: xdy (\\d+d\\d+)")
+        self._regex = match
+
+    @property
+    def x(self):
+        return self._regex.group('x')
+
+    @property
+    def y(self):
+        return self._regex.group('y')
+
+    @property
+    def string(self):
+        return self._regex.string
+
+    def __repr__(self):
+        return f"DiceRoll({self._regex.string})"
+
+
 def roll(expr: str):
     """ `expr` is expected to be:
         xdy with no spaces, x/y must be numbers other than 0 and d is the character 'd'

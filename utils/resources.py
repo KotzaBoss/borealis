@@ -1,6 +1,28 @@
 from abc import ABC
 
+from components.ac import AC
+from components.score import Score
 from utils.enums import SAVINGTHROW, ABILITY, ARMORTYPE, SKILL, WEAPONTYPE
+
+
+class Initiative(Score):
+    def __init__(self, *init):
+        super().__init__(*init)
+
+
+class ProficiencyBonus(Score):
+    def __init__(self, *init):
+        super().__init__(*init)
+
+
+class Inspiration(Score):
+    def __init__(self, *init):
+        super().__init__(*init)
+
+
+class Speed(Score):
+    def __init__(self, *init):
+        super().__init__(*init)
 
 
 class Resource(ABC):
@@ -26,13 +48,11 @@ class Resource(ABC):
     pass
 
 
-class Initiative(int):
-    pass
-
-
 Resource.register(Initiative)
 Resource.register(ABILITY)
 Resource.register(ARMORTYPE)
 Resource.register(SKILL)
 Resource.register(WEAPONTYPE)
 Resource.register(SAVINGTHROW)
+Resource.register(AC)
+Resource.register(Speed)

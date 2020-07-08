@@ -13,13 +13,17 @@ class Ability(object):
         self.base = base
         self.name = name
 
+    def __add__(self, other):
+        return self.score + other
+
+    def __radd__(self, other):
+        return self.score + other
+
     def __eq__(self, other: Union[Ability, int]):
         if isinstance(other, self.__class__):
             return self.score == other.score
         else:
             return self.score == other
-        # return all([self.base == other.base, self.max == other.max, self.user_override == other.user_override,
-        #             self.score == other.score, self.name == other.name])
 
     def __lt__(self, other: Union[Ability, int]):
         if isinstance(other, self.__class__):
@@ -27,9 +31,13 @@ class Ability(object):
         else:
             return self.score < other
 
+    @staticmethod
+    def get_modifier(score: int):
+        return (score - 10) // 2
+
     def __repr__(self):
         s = f"{self.__class__.__name__}("
         for k, v in self.__dict__.items():
             s += f"{k}={v}, "
-        s += "\b\b)"
+        s = s[:-2] + ')'
         return s

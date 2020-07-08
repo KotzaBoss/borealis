@@ -16,5 +16,7 @@ add the following after the `__future__` import
 
 """
 # START: Look up feats and features and find generic similarities
+# TODO: Add feat<->meter classes ASAP
+# TODO: Use Score for values in AC Aility score etc.
 
 DEBUG = True

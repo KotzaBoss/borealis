@@ -3,7 +3,7 @@ import pytest
 from character import Character
 from components.score_manipulator import Changer
 from components.weight import Weight
-from feats import Feat
+from feats import Feat, HeavyArmorMaster
 from utils.resources import Initiative, ABILITY
 
 
@@ -15,10 +15,11 @@ from utils.resources import Initiative, ABILITY
 )
 def test_resources(resource):
     ch = Character(feats=[Feat(Weight(60), Changer(score=5, resource=resource)),
-                          Feat(Weight(50))
+                          HeavyArmorMaster()
                           ])
     ch._initiative = 10
     print('\n', ch.abilities[ABILITY.WIS], ch.initiative)
+    print(ch.feats)
     for feat in ch.feats:
         for comp in feat.components:
             if isinstance(comp, Changer) and comp.resource is resource:

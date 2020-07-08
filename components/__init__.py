@@ -16,8 +16,8 @@ class Component(ABC):
         for k, v in self.__dict__.items():
             s += f"{k}={v}, "
         s += "\b\b)"
+        # return pformat(s)
         return s
-
 
 class ComponentCollection(ABC):
     """ Astract Base Class for Items, Features, Spells, Feats, ... """
