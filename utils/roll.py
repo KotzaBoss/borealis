@@ -1,9 +1,10 @@
 import re
-from random import randint, seed
-
-from borealis import DEBUG  # TODO: Ensure this works
+from random import randint
 
 from utils.enums import ABILITY
+
+
+# from borealis import DEBUG  # TODO: Ensure this works
 
 
 class DiceRoll(object):
@@ -37,8 +38,8 @@ class DiceRoll(object):
 
 def rollv2(dice: DiceRoll):
     """ """
-    if DEBUG:
-        seed(666)
+    # if DEBUG:
+    #     seed(666)
     return sum([randint(1, int(dice.y)) for _ in range(int(dice.x))])
 
 
@@ -46,8 +47,8 @@ def roll(expr: str):
     """ `expr` is expected to be:
         xdy with no spaces, x/y must be numbers other than 0 and d is the character 'd'
     """
-    if DEBUG:
-        seed(666)
+    # if DEBUG:
+    #     seed(666)
     if match := re.match(r'(\d+)d(\d+)', expr):
         return sum(
             [randint(1, int(match.group(2))) for _ in range(int(match.group(1)))]

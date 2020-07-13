@@ -1,17 +1,22 @@
 from __future__ import annotations
 
 from pprint import pformat
-from typing import List, Dict, Tuple
+from typing import List, Tuple
 
 from ability import Ability
 from components.ac import AC
 from components.proficiency import Proficiency
 from components.requirement import AbilityRequirement
 from components.score import Score
-from components.score_manipulator import Changer
+from components.score_manipulator import ScoreManipulator
 from utils.enums import ABILITY, SKILL
 from utils.resources import Initiative, Speed, ProficiencyBonus, Inspiration
 from utils.roll import roll_standard_table, DiceRoll
+
+
+class CharacterAttribute(object):
+    def __repr__(self):
+        return f"{self.__class__.__name__}({super().__repr__()})"
 
 
 class Dependancy(object):
@@ -44,13 +49,64 @@ class Dependancy(object):
         return f"Dependancy({self.obj} from {self.src})"
 
 
-class Items(list):
+class Items(CharacterAttribute, list):
     def __init__(self, *args):
         super().__init__(args)
 
-    def __delitem__(self, key):
-        print("deleting", key, self[key])
-        super().__delitem__(key)
+
+class SavingThrows(CharacterAttribute, dict):
+    def __init__(self):
+        super().__init__({ability: Score() for ability in ABILITY})
+
+
+class Skills(CharacterAttribute, dict):
+    def __init__(self):
+        super().__init__({skill: Score() for skill in SKILL})
+
+
+class Abilities(CharacterAttribute, dict):
+    def __init__(self, init_rolls=None):
+        if not init_rolls:
+            init_rolls = [10 for _ in range(6)]
+        super().__init__({ability: Ability(name=ability, base=init_rolls[i])
+                          for i, ability in enumerate(ABILITY)})
+
+
+class HP(CharacterAttribute, dict):
+    def __init__(self):
+        super().__init__({'max': Score(), 'temp': Score(), 'curr': Score()})
+
+
+class Proficiencies(CharacterAttribute, list):
+    def __init__(self, *args):
+        super().__init__(args)
+
+    def __repr__(self):
+        return super().__repr__() + ' Not Implemented!'
+
+
+class Spells(CharacterAttribute, list):
+    def __init__(self, *args):
+        super().__init__(args)
+
+    def __repr__(self):
+        return super().__repr__() + ' Not Implemented!'
+
+
+class Features(CharacterAttribute, list):
+    def __init__(self, *args):
+        super().__init__(args)
+
+    def __repr__(self):
+        return super().__repr__() + ' Not Implemented!'
+
+
+class Feats(CharacterAttribute, list):
+    def __init__(self, *args):
+        super().__init__(args)
+
+    def __repr__(self):
+        return super().__repr__() + ' Not Implemented!'
 
 
 class Character(object):
@@ -63,39 +119,52 @@ class Character(object):
                  proficiencies: List[Proficiency] = None,
                  name: str = '-=>NONAME<=-'):
 
+        init_rolls = init_rolls if init_rolls else roll_standard_table()
         self._name: str = name
-        self._inspiration = Inspiration()
+        self._inspiration: Inspiration = Inspiration()
         self._proficiency_bonus: ProficiencyBonus = ProficiencyBonus()
         self._ac: AC = AC()
         self._speed: Speed = Speed()
-        self._hp = {'max': Score(), 'temp': Score(), 'curr': Score()}
-        self._hit_dice = DiceRoll()
-        self._features = []
-        self._proficiencies = proficiencies if proficiencies else []
-        self._spells = []  # spell sheets?
-        init_rolls = init_rolls if init_rolls else roll_standard_table()
-        self._abilities: Dict[ABILITY, Ability] = \
-            {ability: Ability(name=ability, base=init_rolls[i]) for i, ability in enumerate(ABILITY)}
+        self._hp = HP()
+        self._hit_dice: DiceRoll = DiceRoll()
+        self._features: Features = Features()
+        self._proficiencies: Proficiencies = Proficiencies(*proficiencies) if proficiencies else Proficiencies()
+        self._spells: Spells = Spells()
+        self._abilities: Abilities = Abilities(init_rolls)
         self._initiative: Initiative = Initiative(self._abilities[ABILITY.DEX].get_modifier())
-        self._skills = {skill: Score() for skill in SKILL}
-        self._saving_throws = {ability: Score() for ability in ABILITY}
-        self._items = Items(*items) if items else Items()
-        for item in items:
-            for comp in item.components:
-                if isinstance(comp, Changer):
-                    if comp.resource == Initiative:
-                        self._initiative.append(Dependancy(obj=comp, src=item))
-
-        self._feats, err = self.check_feat_req(feats) if feats else ([], [])
+        self._skills: Skills = Skills()
+        self._saving_throws: SavingThrows = SavingThrows()
+        self._items: Items = Items(*items) if items else Items()
+        self.add_item(*items)
+        self._feats, err = self.check_feat_req(feats) if feats else (Feats(), [])
         if err:
             print(f"prerequisites not met for {err}")
 
-    def __contains__(self, item: Proficiency):
-        """ Check if item in attribute depending on type. """
-        if isinstance(item, Prociciency):
-            return item.resource in self._proficiencies
+    def __getitem__(self, key):
+        """ Use self[key] instead of self.__dict__[key]
 
-    def delete_item(self, item):  # TODO: That is the idea for dependancies...
+            If key is a resource then self._resource is looked up
+            Examples
+            --------
+            >>> from components.score_manipulator import Changer
+            >>> from utils.resources import Initiative
+            >>> from item import Item
+            >>> c = Character(items=[Item(Changer(score=1, resource=Initiative))])
+            >>> c[Initiative] == c.__dict__['_' + Initiative.__name__.lower()]
+            True
+
+        """
+        if isinstance(key, type):
+            key = '_' + key.__name__.lower()
+        return self.__dict__[key]
+
+    def add_item(self, *new_items):
+        for item in new_items:
+            for comp in item.components:
+                if isinstance(comp, ScoreManipulator):
+                    self[comp.resource].append(Dependancy(obj=comp, src=item))
+
+    def delete_item(self, del_item):  # TODO: That is the idea for dependancies...
         """
         for deleted thing
         find dependacies on thing  (could be infered from the thing
@@ -104,16 +173,21 @@ class Character(object):
         delete thing
         ...
         """
-        for i, item_ in enumerate(self._items):
-            if item_ == item:
-                for comp in item.components:
-                    if isinstance(comp, Changer) and comp.resource == Initiative:
-                        for j, dep in enumerate(self._initiative):
-                            if isinstance(dep, Dependancy) and dep.src == item_:
-                                del self._initiative[j]
-                del self._items[i]
-                print('deketed', item)
-                break
+        for i, item in enumerate(self._items):
+            if item == del_item:
+                for comp in item.components:  # QUESTION: follow item to depenndancies
+                    if isinstance(comp, ScoreManipulator):
+                        attr = self[comp.resource]
+                        if getattr(attr, '__contains__', None):
+                            for obj in attr:
+                                if isinstance(obj, Dependancy) and obj.src == del_item:
+                                    attr.remove(obj)
+                # for attr_key, attr_value in self.__dict__.items():  # QUESTION: look everywhere????
+                #     if getattr(attr_value, '__contains__', None):  # TODO: fix AC
+                #         for obj in attr_value:
+                #             if isinstance(obj, Dependancy) and obj.src == del_item:
+                #                 attr_value.remove(obj)
+            self._items.remove(item)
 
     def check_feat_req(self, feats) -> Tuple[List[Feat], List[Feat]]:
         """ Check feats to ensure requirements are met. Separate passed from failed feats. """
@@ -125,7 +199,7 @@ class Character(object):
                         break
                 else:
                     err.append(feat)
-        return [feat for feat in feats if feat not in err], err
+        return Feats(*[feat for feat in feats if feat not in err]), err
 
     @property
     def name(self):

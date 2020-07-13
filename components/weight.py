@@ -5,6 +5,8 @@ from typing import Union
 from components import Component
 
 
+# TODO: Implement __arithmetic_methods__ properly
+
 class Mass(int):
 
     def __init__(self, value: int = -1):
