@@ -19,6 +19,12 @@ class ScoreManipulator(Component):
         self._score = score
         self._resource = resource
 
+    def __add__(self, other):
+        return self._score + other
+
+    def __radd__(self, other):
+        return self._score + other
+
     @property
     def score(self):
         return self._score
@@ -40,12 +46,15 @@ class ScoreManipulator(Component):
 
 
 class Setter(ScoreManipulator):
-    pass
+    def __repr__(self):
+        return f"Setter({self.resource} to {self.score})"
 
 
 class Changer(ScoreManipulator):
-    pass
+    def __repr__(self):
+        return f"Changer(+{self.score} to {self.resource})"
 
 
 class MaxSetter(ScoreManipulator):
-    pass
+    def __repr__(self):
+        return f"MaxSetter(Set max of {self.resource} to {self.score})"

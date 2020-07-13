@@ -15,8 +15,7 @@ class Component(ABC):
         s = f"{self.__class__.__name__}("
         for k, v in self.__dict__.items():
             s += f"{k}={v}, "
-        s += "\b\b)"
-        # return pformat(s)
+        s = s[:-2] + ")"
         return s
 
 class ComponentCollection(ABC):
@@ -46,7 +45,7 @@ class ComponentCollection(ABC):
         s = f"{self.__class__.__name__}("
         for k, v in self.__dict__.items():
             s += f"{k}={v}, "
-        s += "\b\b)"
+        s = s[:-2] + ")"
         return s
 
 

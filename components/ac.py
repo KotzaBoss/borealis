@@ -8,8 +8,8 @@ class AC(Component):
     AC_KEYS = {'flat_ac', 'dex_cap', 'dex', 'use_dex'}
 
     def __init__(self, *, flat_ac: int = 0, dex_cap: int = 0, dex: int = 0, use_dex: bool = False):
-        self._ac = {'flat ac': flat_ac, 'dex cap': dex_cap, 'dex': dex,
-                    'use dex': use_dex, 'AC': 0}
+        self._ac = {'flat ac': flat_ac, 'dex cap': dex_cap, 'dex': dex, 'use dex': use_dex,
+                    'AC': 0}
         self.update_ac()
 
     def __getitem__(self, item: str):

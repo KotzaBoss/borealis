@@ -8,9 +8,49 @@ from components.ac import AC
 from components.proficiency import Proficiency
 from components.requirement import AbilityRequirement
 from components.score import Score
+from components.score_manipulator import Changer
 from utils.enums import ABILITY, SKILL
 from utils.resources import Initiative, Speed, ProficiencyBonus, Inspiration
 from utils.roll import roll_standard_table, DiceRoll
+
+
+class Dependancy(object):
+    """ Items, Freats, etc have multiple objects that may manipulate a score.
+        but instead of copying the entire object again and again we could add a dependancy
+        and keep only the object that manipulates it.
+
+        Example
+        -------
+        Item1 which has many effects and one that affects initiative +1.
+        Then initiative only needs to know about the +1.
+        So we create a dependacy passing the object that demands the +1.
+        When Item1 is deleted then we can be directed by its effects (+1 to INITIATIVE)
+        and delete the dependacies.
+
+        Obviously an overloard/overseer will be doing the adding/changing/deleting.
+    """
+
+    def __init__(self, obj=None, src=None):
+        self.obj = obj
+        self.src = src
+
+    def __add__(self, other):
+        return self.obj + other
+
+    def __radd__(self, other):
+        return self.obj + other
+
+    def __repr__(self):
+        return f"Dependancy({self.obj} from {self.src})"
+
+
+class Items(list):
+    def __init__(self, *args):
+        super().__init__(args)
+
+    def __delitem__(self, key):
+        print("deleting", key, self[key])
+        super().__delitem__(key)
 
 
 class Character(object):
@@ -27,31 +67,53 @@ class Character(object):
         self._inspiration = Inspiration()
         self._proficiency_bonus: ProficiencyBonus = ProficiencyBonus()
         self._ac: AC = AC()
-        self._initiative: Initiative = Initiative()
         self._speed: Speed = Speed()
         self._hp = {'max': Score(), 'temp': Score(), 'curr': Score()}
         self._hit_dice = DiceRoll()
         self._features = []
         self._proficiencies = proficiencies if proficiencies else []
         self._spells = []  # spell sheets?
-        if not init_rolls:
-            init_rolls = roll_standard_table()
+        init_rolls = init_rolls if init_rolls else roll_standard_table()
         self._abilities: Dict[ABILITY, Ability] = \
             {ability: Ability(name=ability, base=init_rolls[i]) for i, ability in enumerate(ABILITY)}
+        self._initiative: Initiative = Initiative(self._abilities[ABILITY.DEX].get_modifier())
         self._skills = {skill: Score() for skill in SKILL}
         self._saving_throws = {ability: Score() for ability in ABILITY}
-        self._items = items if items else []
+        self._items = Items(*items) if items else Items()
+        for item in items:
+            for comp in item.components:
+                if isinstance(comp, Changer):
+                    if comp.resource == Initiative:
+                        self._initiative.append(Dependancy(obj=comp, src=item))
+
         self._feats, err = self.check_feat_req(feats) if feats else ([], [])
         if err:
             print(f"prerequisites not met for {err}")
-
-    # def __eq__(self, other):
-    #     return all([self._name == other._name, self._abilities == other._abilities, self._items == other._items])
 
     def __contains__(self, item: Proficiency):
         """ Check if item in attribute depending on type. """
         if isinstance(item, Prociciency):
             return item.resource in self._proficiencies
+
+    def delete_item(self, item):  # TODO: That is the idea for dependancies...
+        """
+        for deleted thing
+        find dependacies on thing  (could be infered from the thing
+        eg. item with changer to initiative directs you to look for dependacies in initiative)
+        delete dependacies
+        delete thing
+        ...
+        """
+        for i, item_ in enumerate(self._items):
+            if item_ == item:
+                for comp in item.components:
+                    if isinstance(comp, Changer) and comp.resource == Initiative:
+                        for j, dep in enumerate(self._initiative):
+                            if isinstance(dep, Dependancy) and dep.src == item_:
+                                del self._initiative[j]
+                del self._items[i]
+                print('deketed', item)
+                break
 
     def check_feat_req(self, feats) -> Tuple[List[Feat], List[Feat]]:
         """ Check feats to ensure requirements are met. Separate passed from failed feats. """

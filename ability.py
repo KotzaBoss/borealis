@@ -31,9 +31,8 @@ class Ability(object):
         else:
             return self.score < other
 
-    @staticmethod
-    def get_modifier(score: int):
-        return (score - 10) // 2
+    def get_modifier(self):
+        return (self.score - 10) // 2
 
     def __repr__(self):
         s = f"{self.__class__.__name__}("

@@ -1,10 +1,12 @@
-from pprint import pformat
-
-
 class Score(list):
     """ Class to be used for most numbers.
         A Score is a list of objects that contribute to a final number
         Each object should supply their arithmetic magic methods.
+        >>> from ability import Ability
+        >>> s1 = Score(Ability(base=15))
+        >>> s2 = Score(Ability(base=5))
+        >>> s1 + s2
+        20
 
         Raises
         ------
@@ -13,9 +15,16 @@ class Score(list):
     """
 
     def __init__(self, *args):
-        for obj in args:
-            if not all(method in dir(obj) for method in ['__add__', '__radd__']):  # Ensure arithmetic ops are implemented
-                raise AttributeError
+        """
+            Parameters
+            ----------
+            args
+                Initial objects that implement arithmetic operators
+        """
+        if args:
+            for obj in args:
+                if not all(method in dir(obj) for method in ['__add__', '__radd__']):  # Ensure arithmetic ops are implemented
+                    raise AttributeError
         super().__init__(args)
 
     def __add__(self, other):
@@ -28,4 +37,4 @@ class Score(list):
         return sum(self)
 
     def __repr__(self):
-        return "Score(" + pformat(super().__repr__()).strip('()').replace("'", '') + f"={sum(self)})"
+        return f"Score({super().__repr__()}={sum(self)})"

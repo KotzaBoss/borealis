@@ -7,15 +7,16 @@ from utils.enums import ABILITY
 
 
 class DiceRoll(object):
-    """ Mostly documentation dice roll class.
+    """ Dice roll class.
         Expected dice roll expression should be xdy or `\\d+d\\d+`.
         eg: 10d10, 2d10, 1d1
         not 10 d20, 1d 20 or anything else
+        TODO: Refactor roll funcst to use DiceRoll
     """
 
     def __init__(self, expr: str = '0d0'):
         if not (match := re.match(r'(?P<x>\d+)d(?P<y>\d+)', expr)):
-            raise ValueError("Dice expression expected: xdy (\\d+d\\d+)")
+            raise ValueError(r"Dice expression expected: xdy (\d+d\d+)")
         self._regex = match
 
     @property
@@ -32,6 +33,13 @@ class DiceRoll(object):
 
     def __repr__(self):
         return f"DiceRoll({self._regex.string})"
+
+
+def rollv2(dice: DiceRoll):
+    """ """
+    if DEBUG:
+        seed(666)
+    return sum([randint(1, int(dice.y)) for _ in range(int(dice.x))])
 
 
 def roll(expr: str):
