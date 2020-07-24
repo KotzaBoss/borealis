@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict
+from typing import List, Dict, Type
 
-from character import Character
+from ability import Ability
+from character import Character, Dependancy
 from components.score_manipulator import Changer, Setter, MaxSetter, ScoreManipulator
 from utils.enums import ABILITY
 
@@ -16,6 +17,32 @@ class Overseer(ABC):
 
 
 class AbilityOverseer(Overseer):
+
+    def __init__(self, char: Character):
+        self.overseen = char
+        self.deps: Dict[ABILITY, Dict[Type[ScoreManipulator], List[Dependancy]]] = \
+            {ability: {Setter: [], MaxSetter: [], Changer: []} for ability in ABILITY}
+
+    def calc(self, ability: ABILITY):
+        final: Ability = self.overseen.abilities[ability]
+        if mxsetters := self.deps[ability][MaxSetter]:
+            final.max = mxsetters[0].obj.score
+        if setters := self.deps[ability][Setter]:
+            final.score = setters[0].obj.score
+        elif changers := self.deps[ability][Changer]:
+            final.score += sum(changers)
+        return final
+
+    def add_dep(self, *new_obj):
+        for item in new_obj:
+            for comp in item.components:
+                if isinstance(comp, ScoreManipulator):
+                    self.deps[comp.resource][type(comp)].append(Dependancy(obj=comp, src=item))
+
+    def del_dep(self, *old_obj):
+        for item in old_obj:
+            self.deps.pop(item)
+
     @classmethod
     def awaken(cls, char: Character):
         pass
@@ -60,3 +87,6 @@ class AbilityOverseer(Overseer):
                 for changer in score_changers[ability]:
                     char.abilities[ability].score += changer.score
                     break
+
+    def __repr__(self):
+        return f"AbilityOverseer({self.overseen.name=}, {self.deps=})"

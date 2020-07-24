@@ -1,7 +1,7 @@
 import pytest
 
-from character import Character
-from overlord import Azathoth
+from overlord import *
+from utils.resources import Initiative
 from utils.roll import roll
 
 
@@ -23,4 +23,13 @@ def test_roll(expr):
 
 
 def test_new():
-    assert Azathoth.awaken('new') == Character()
+    print()
+    c = Azathoth.awaken('new')
+    print(c)
+
+
+def test_view():
+    print()
+    c = Azathoth.awaken('new')
+    # print(Azathoth.awaken('view', c, ABILITY.STR))
+    print(Azathoth.awaken('view', c, Initiative))

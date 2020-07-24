@@ -14,3 +14,28 @@ def test_experimental():
     c.delete_item(i)
     assert i not in c.items
     print('\nAFTER DELETE', c, '\n')
+
+
+from overlord import Amun, StorageGod, Horus
+from utils.resources import ABILITY
+
+from components.score_manipulator import MaxSetter, Setter
+
+
+def test_ability_score_mediator():
+    print()
+    Amun.awaken(
+        items=[
+            Item(
+                Changer(score=1, resource=ABILITY.STR),
+                Changer(score=1, resource=ABILITY.STR),
+                MaxSetter(score=1, resource=ABILITY.STR),
+                Setter(score=666, resource=ABILITY.STR)
+            )
+        ],
+        init_rolls=[10 for _ in range(6)]
+    )
+    from pprint import pprint
+    for char in StorageGod.characters:
+        pprint(Horus.view(char, ABILITY))
+#

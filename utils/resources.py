@@ -5,9 +5,19 @@ from components.score import Score
 from utils.enums import SAVINGTHROW, ABILITY, ARMORTYPE, SKILL, WEAPONTYPE
 
 
+def isresource(x, resource):
+    """ Check whether x is a valid resource. Resources are registered below. """
+    if not isinstance(x, type):  # Enum.foo is not a type but it is a resource.
+        return issubclass(type(x), resource)
+    return issubclass(x, resource)
+
+
 class Initiative(Score):
     def __init__(self, *init):
         super().__init__(*init)
+
+    def __repr__(self):
+        return super().__repr__().replace('Score', self.__class__.__name__)
 
 
 class ProficiencyBonus(Score):

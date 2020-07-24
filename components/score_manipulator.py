@@ -46,15 +46,24 @@ class ScoreManipulator(Component):
 
 
 class Setter(ScoreManipulator):
+    def __call__(self, *args, **kwargs):
+        return 1
+
     def __repr__(self):
         return f"Setter({self.resource} to {self.score})"
 
 
 class Changer(ScoreManipulator):
+    def __call__(self, *args, **kwargs):
+        return 2
+
     def __repr__(self):
         return f"Changer(+{self.score} to {self.resource})"
 
 
 class MaxSetter(ScoreManipulator):
+    def __call__(self, *args, **kwargs):
+        return 3
+
     def __repr__(self):
         return f"MaxSetter(Set max of {self.resource} to {self.score})"

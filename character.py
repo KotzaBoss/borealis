@@ -9,6 +9,7 @@ from components.proficiency import Proficiency
 from components.requirement import AbilityRequirement
 from components.score import Score
 from components.score_manipulator import ScoreManipulator
+from dev import deprecated
 from utils.enums import ABILITY, SKILL
 from utils.resources import Initiative, Speed, ProficiencyBonus, Inspiration
 from utils.roll import roll_standard_table, DiceRoll
@@ -68,8 +69,10 @@ class Abilities(CharacterAttribute, dict):
     def __init__(self, init_rolls=None):
         if not init_rolls:
             init_rolls = [10 for _ in range(6)]
-        super().__init__({ability: Ability(name=ability, base=init_rolls[i])
-                          for i, ability in enumerate(ABILITY)})
+        super().__init__(
+            {ability: Ability(name=ability, base=init_rolls[i])
+             for i, ability in enumerate(ABILITY)
+             })
 
 
 class HP(CharacterAttribute, dict):
@@ -135,7 +138,6 @@ class Character(object):
         self._skills: Skills = Skills()
         self._saving_throws: SavingThrows = SavingThrows()
         self._items: Items = Items(*items) if items else Items()
-        self.add_item(*items)
         self._feats, err = self.check_feat_req(feats) if feats else (Feats(), [])
         if err:
             print(f"prerequisites not met for {err}")
@@ -158,12 +160,14 @@ class Character(object):
             key = '_' + key.__name__.lower()
         return self.__dict__[key]
 
+    @deprecated('Logic moved to AbilityOverseer for abilities. Pending deletion')
     def add_item(self, *new_items):
         for item in new_items:
             for comp in item.components:
                 if isinstance(comp, ScoreManipulator):
                     self[comp.resource].append(Dependancy(obj=comp, src=item))
 
+    @deprecated('Logic moved to AbilityOverseer for abilities. Pending deletion.')
     def delete_item(self, del_item):  # TODO: That is the idea for dependancies...
         """
         for deleted thing
