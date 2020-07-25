@@ -1,14 +1,10 @@
+from pprint import pprint
+
 import pytest
 
+from components.score_manipulator import Changer
+from item import Item
 from overlord import *
-from utils.resources import Initiative
-from utils.roll import roll
-
-
-# import sys
-# import os
-# sys.path.append('/../')
-# sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))
 
 
 @pytest.mark.parametrize(
@@ -19,7 +15,8 @@ from utils.roll import roll
     ]
 )
 def test_roll(expr):
-    assert Azathoth.awaken('roll ' + expr) == roll(expr)
+    print()
+    print(Azathoth.awaken('roll ' + expr))
 
 
 def test_new():
@@ -30,6 +27,11 @@ def test_new():
 
 def test_view():
     print()
-    c = Azathoth.awaken('new')
-    # print(Azathoth.awaken('view', c, ABILITY.STR))
-    print(Azathoth.awaken('view', c, Initiative))
+    c = Azathoth.awaken('new',
+                        items=[
+                            Item(Changer(score=1, resource=ABILITY.STR))
+                        ])
+    pprint(Azathoth.awaken('view', c, ABILITY.STR))
+    # pprint(Azathoth.awaken('view', c, Initiative))
+    # pprint(Azathoth.awaken('view', c, AC))
+    pprint(Azathoth.awaken('view', c, ABILITY))

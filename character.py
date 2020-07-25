@@ -3,16 +3,17 @@ from __future__ import annotations
 from pprint import pformat
 from typing import List, Tuple
 
+from deprecated import deprecated
+
 from ability import Ability
 from components.ac import AC
 from components.proficiency import Proficiency
 from components.requirement import AbilityRequirement
 from components.score import Score
 from components.score_manipulator import ScoreManipulator
-from dev import deprecated
 from utils.enums import ABILITY, SKILL
 from utils.resources import Initiative, Speed, ProficiencyBonus, Inspiration
-from utils.roll import roll_standard_table, DiceRoll
+from utils.roll import DiceRoll
 
 
 class CharacterAttribute(object):
@@ -122,7 +123,7 @@ class Character(object):
                  proficiencies: List[Proficiency] = None,
                  name: str = '-=>NONAME<=-'):
 
-        init_rolls = init_rolls if init_rolls else roll_standard_table()
+        init_rolls = init_rolls if init_rolls else [10 for _ in range(6)]
         self._name: str = name
         self._inspiration: Inspiration = Inspiration()
         self._proficiency_bonus: ProficiencyBonus = ProficiencyBonus()
@@ -138,7 +139,8 @@ class Character(object):
         self._skills: Skills = Skills()
         self._saving_throws: SavingThrows = SavingThrows()
         self._items: Items = Items(*items) if items else Items()
-        self._feats, err = self.check_feat_req(feats) if feats else (Feats(), [])
+        self._feats, err = self.check_feat_req(feats) if feats else (
+        Feats(), [])  # TODO: Check deprecation decorator of cheac_feat_req
         if err:
             print(f"prerequisites not met for {err}")
 
@@ -193,6 +195,7 @@ class Character(object):
                 #                 attr_value.remove(obj)
             self._items.remove(item)
 
+    @deprecated('Feats, features, etc will be directed by Yannis (YAML files)')
     def check_feat_req(self, feats) -> Tuple[List[Feat], List[Feat]]:
         """ Check feats to ensure requirements are met. Separate passed from failed feats. """
         err = []
