@@ -11,45 +11,58 @@ Author: Yiannis Christos Psaradakis
 type: Feature
 # Available options: Class Feature, Race Trait, Feat, Epic Boon, Item, Spell Effect, Other.
 
-requirements: {
-  level: 0, # level requirement only apply on class Features and race traits most of the time,
-  # Items, spell effects and feats should not have any (to my knowledge).
-  # level requirement means you must generally be level X or higher (if it is 3 then 3 or higher [>=3])
+image: path/to/img
+# We may want to display images for some items (probably 1 image but who knows)
+effects: [
+  effect1: {
+    requirements: {
+      level: 0, # level requirement only apply on class Features and race traits most of the time,
+      # Items, spell effects and feats should not have any (to my knowledge).
+      # level requirement means you must generally be level X or higher (if it is 3 then 3 or higher [>=3])
 
-  ability: {str: 0},
-  # ability requirement means you must have the specified ability score above or equal to the current num
+      ability: {str: 0},
+      # ability requirement means you must have the specified ability score above or equal to the current num
 
-  race: human,
-  # race requirement means you must be the specified races (or races with list)
+      race: human,
+      # race requirement means you must be the specified races (or races with list)
 
-  class: barbarian,
-  # class requirement means you must be the specified class (or classes with list)
+      class: barbarian,
+      # class requirement means you must be the specified class (or classes with list)
 
-  proficiency: athletics,
-  # proficiency requirement means you must have proficiency with the specified skill, tool, armor, weapons or anything
-  # that proficiency can be applied to
+      proficiency: athletics,
+      # proficiency requirement means you must have proficiency with the specified skill, tool, armor, weapons or anything
+      # that proficiency can be applied to
 
-  level in class: { barbarian: 0},
-  # level in class requirement means you must have the specified levels in the specified class.
+      level in class: { barbarian: 0},
+      # level in class requirement means you must have the specified levels in the specified class.
 
-  attunement: true
-  # attunement requirement means you need to attune the item.
+      attunement: true,
+      # attunement requirement means you need to attune the item.
+
+      ending in level: 0,
+      # level that the effect no longer works, usually we will use this in order to make the effect be more
+      # powerful. Example:Rage adds +2 on damage from levels 1-4 but on 5 it adds +3. So The +2 Rage ends at level 5 and
+      # +3 rage starts at level 5. Although this is classless and I don't know if ever usefull.
+
+      ending level in class:{barbarian: 2},
+      # level in class that the effect no longer works, usually we will use this in order to make the effect be more
+      # powerful. Example:Rage adds +2 on damage from levels 1-4 but on 5 it adds +3. So The +2 Rage ends at level 5 and
+      # +3 rage starts at level 5.
+
+    },
+
+    extras: {
+      duration: 0,
+      # The duration of the effect
+      activatable: true,
+      # If the effect has to be activated
+      charges: 3,
+      # The amount of charges of the effect
+      Passive: true,
+      # If the ability is always activated
+      Action: [Action, Bonus Action, Reaction, Free, Interaction, Movement],
+      # What type of action is the one you are taking
+    },
+    effect: {Object that identifies the effect name and it's variables}
   }
-
-
-
-
-
-
-
-Effects:
-  []
-
-# All possible different feature effects are close to one thousand so I will try to find the commonalities.
-# Ability score Increase: [Ability, #ammount]
-# Speed set: num
-# Darkvision: Boolean
-# Advantage on: [Skill, saving throw, weapons, armor, shields, tools, vehicle, conditions, other]
-# Disadvantage on: [Skill, saving throw, weapons, armor, shields, tools, vehicle, conditions, other]
-# Proficiency on: [Skill, saving throw, weapons, armor, shields, tools, vehicle, conditions, other]
-# Double Proficiency on: [Skill, saving throw, weapons, tools, vehicle, other]
+ ]
