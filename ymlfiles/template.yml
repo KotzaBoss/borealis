@@ -60,8 +60,8 @@ effects: [
       # The amount of charges of the effect
       Passive: true,
       # If the ability is always activated
-      Action: [Action, Bonus Action, Reaction, Free, Interaction, Movement],
-      # What type of action is the one you are taking
+      Action: Action,
+      # What type of action is the one you are taking [Action, Bonus Action, Reaction, Free, Interaction, Movement]
     },
     effect: {Object that identifies the effect name and it's variables}
   }
