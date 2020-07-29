@@ -3,6 +3,8 @@ from __future__ import annotations
 from pprint import pformat
 from typing import List, Tuple
 
+from deprecated import deprecated
+
 from ability import Ability
 from components.ac import AC
 from components.proficiency import Proficiency
@@ -11,7 +13,7 @@ from components.score import Score
 from components.score_manipulator import ScoreManipulator
 from utils.enums import ABILITY, SKILL
 from utils.resources import Initiative, Speed, ProficiencyBonus, Inspiration
-from utils.roll import roll_standard_table, DiceRoll
+from utils.roll import DiceRoll
 
 
 class CharacterAttribute(object):
@@ -68,8 +70,10 @@ class Abilities(CharacterAttribute, dict):
     def __init__(self, init_rolls=None):
         if not init_rolls:
             init_rolls = [10 for _ in range(6)]
-        super().__init__({ability: Ability(name=ability, base=init_rolls[i])
-                          for i, ability in enumerate(ABILITY)})
+        super().__init__(
+            {ability: Ability(name=ability, base=init_rolls[i])
+             for i, ability in enumerate(ABILITY)
+             })
 
 
 class HP(CharacterAttribute, dict):
@@ -119,7 +123,7 @@ class Character(object):
                  proficiencies: List[Proficiency] = None,
                  name: str = '-=>NONAME<=-'):
 
-        init_rolls = init_rolls if init_rolls else roll_standard_table()
+        init_rolls = init_rolls if init_rolls else [10 for _ in range(6)]
         self._name: str = name
         self._inspiration: Inspiration = Inspiration()
         self._proficiency_bonus: ProficiencyBonus = ProficiencyBonus()
@@ -135,8 +139,8 @@ class Character(object):
         self._skills: Skills = Skills()
         self._saving_throws: SavingThrows = SavingThrows()
         self._items: Items = Items(*items) if items else Items()
-        self.add_item(*items)
-        self._feats, err = self.check_feat_req(feats) if feats else (Feats(), [])
+        self._feats, err = self.check_feat_req(feats) if feats else (
+        Feats(), [])  # TODO: Check deprecation decorator of cheac_feat_req
         if err:
             print(f"prerequisites not met for {err}")
 
@@ -158,12 +162,14 @@ class Character(object):
             key = '_' + key.__name__.lower()
         return self.__dict__[key]
 
+    @deprecated('Logic moved to AbilityOverseer for abilities. Pending deletion')
     def add_item(self, *new_items):
         for item in new_items:
             for comp in item.components:
                 if isinstance(comp, ScoreManipulator):
                     self[comp.resource].append(Dependancy(obj=comp, src=item))
 
+    @deprecated('Logic moved to AbilityOverseer for abilities. Pending deletion.')
     def delete_item(self, del_item):  # TODO: That is the idea for dependancies...
         """
         for deleted thing
@@ -189,6 +195,7 @@ class Character(object):
                 #                 attr_value.remove(obj)
             self._items.remove(item)
 
+    @deprecated('Feats, features, etc will be directed by Yannis (YAML files)')
     def check_feat_req(self, feats) -> Tuple[List[Feat], List[Feat]]:
         """ Check feats to ensure requirements are met. Separate passed from failed feats. """
         err = []
